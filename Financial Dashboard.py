@@ -99,6 +99,16 @@ def create_AP_Summary_frame():
         canvas.get_tk_widget().pack(side='top')
         canvas.get_tk_widget().place(bordermode=OUTSIDE)
         
+        #$$$$$$$$$$$$$$$$$$$$$$$ Place Holder for Pie Graph $$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+
+
+
+
+        
+
+        #$$$$$$$$$$$$$$$$$$$$$$$ Place Holder for Table $$$$$$$$$$$$$$$$$$$$$$$$$$$$
         #Hides 'AP Summary GUI'
         ap_summary_window.withdraw()
         
@@ -147,22 +157,96 @@ btn_AP_Summary.place(x=50, y=100)
 
 #Creates AR Summmary window
 def create_AR_Summary_frame():
-
+    #Creates GUI object and sets size of GUI
     ar_summary_window = Tk()
     ar_summary_window.geometry('1600x1200')
-
-    main_window.destroy()
-
+    
+    #Hides 'Main Screen' GUI
+    main_window.withdraw()
+    
+    #Sets title of 'AR Summary File Upload' GUI
     ar_summary_window.title('AR Summary File Upload')
-    txt_file = Text(ar_summary_window, height=4,
-                    width=120, bg='white', fg='black', )
-    txt_file.place(x=100, y=350)
+    
+    #Creates textbox for 'AR Summary Frame' GUI and sets location on GUI
+    ar_txt_file = Text(ar_summary_window, height=4,
+                    width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+    ar_txt_file.place(x=100, y=350)
+    
+    #Button for going back to 'Pueblo Cooperative Care (Home)' GUI
+    btn_home = Button(ar_summary_window, text="Back to Main", command=lambda: [ar_summary_window.destroy(), main_window.deiconify()],
+                      width=20, height=3, fg='green')
 
-    btn_file_upload = Button(ar_summary_window, text="Select File", command=browseFiles,
-                             width=20, height=3, fg='green')
+    #Button for selecting 'AR Summary' file for upload and location on 'AR Summary Frame' GUI
+    btn_home.place(x=100, y=550)
+    btn_file_upload = Button(ar_summary_window, text="Find File", command=lambda: [ar_txt_file.configure(state='normal'), ar_txt_file.delete('1.0', "end"),
+                                                                                   browseFiles(), ar_txt_file.insert(INSERT, filepath),
+                                                                                   ar_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+    btn_file_upload.place(x=400, y=550)
 
-    btn_file_upload.place(x=950, y=350)
+    #Nested fuction for ETL of 'AR Summary' .xslx file
+    def anaylze_AR_summary():
+        df = pd.read_excel(
+            filepath, sheet_name=1)
 
+        df['Unnamed: 0'] = np.nan
+        df.dropna(how='all', axis=1, inplace=True)
+
+        df = pd.melt(df, id_vars='Unnamed: 1',
+                     var_name='Date Ranges', value_name='Amount')
+        
+        #Nested function for creating figure for 'grouped bar chart'
+        def create_plot():
+            axs = sns.catplot(x='Date Ranges', y='Amount',
+                              hue='Unnamed: 1', data=df, kind='bar')
+            axs.fig.suptitle('AR Summary')
+            return axs.fig
+        #Creates window for grARhical display of data and size of GUI frame
+        ar_analyze_window = Tk()
+        ar_analyze_window.geometry('1600x1200')
+        #Calls create_plot() function to put 'grouped bar chart' in 'Canvas' frame
+        figure = create_plot()
+        canvas = FigureCanvasTkAgg(figure, master=ar_analyze_window)
+        canvas.draw()
+        #Sets position of created 'Canvas'
+        canvas.get_tk_widget().pack(side='top')
+        canvas.get_tk_widget().place(bordermode=OUTSIDE)
+        
+        #Hides 'AR Summary GUI'
+        ar_summary_window.withdraw()
+        
+        #WIP
+        def pdf_Print():
+            f= 5
+          # fp = tempfile.TemporaryFile()
+          # fp.write(ar_analyze_window)
+
+          # ps = canvas..postscript(colormode='color')
+          # img = Image.open(io.BytesIO(ps.encode('utf-8')))
+          # img.save('filename.jpg', 'jpeg')
+
+          # postscript_file = "tmp_snARshot.ps"
+          # subprocess.call(["impg", "-window", "td", postscript_file])
+        
+        #WIP Button for Printing 'Canvas' and button position
+        btn_print = Button(ar_analyze_window, text="Print as PDF", command=pdf_Print(),
+                           width=20, height=3, fg='green')
+
+        btn_print.place(x=100, y=550)
+        
+        #WIP Button for saving file as 'PDF' and button position
+        btn_pdf = Button(ar_analyze_window, text="Save as PDF", command=lambda: [ar_summary_window.destroy(), main_window.deiconify()],
+                         width=20, height=3, fg='green')
+        btn_pdf.place(x=500, y=550)
+        
+        #Display's 'AR Analyze' GUI frame
+        ar_analyze_window.mainloop()
+
+    #Button event handler for calling 'analyze_AR_summary' function and button position
+    btn_analyze = Button(ar_summary_window, text="Analyze File", command=anaylze_AR_summary,
+                         width=20, height=3, fg='green')
+    btn_analyze.place(x=700, y=550)
+    
+    #Displays 'AR Summary' GUI    
     ar_summary_window.mainloop()
 
 # Creates Button on main window for 'AR Summary' Option
