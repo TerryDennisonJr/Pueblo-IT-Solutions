@@ -219,7 +219,7 @@ def create_AR_Summary_frame():
         ar_analyze_window = Tk()
         ar_analyze_window.geometry('1900x1200')
         ar_analyze_window.state('zoomed')
-
+        ar_analyze_window.title("AR Summary Calculations")
         # Calls create_plot() function to put 'grouped bar chart' in 'Canvas' frame
         figure = create_plot()
         canvas = FigureCanvasTkAgg(figure, master=ar_analyze_window)
