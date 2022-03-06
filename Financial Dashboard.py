@@ -21,14 +21,14 @@ import tempfile
 import subprocess
 import tempfile
 
-
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates main window of program
 main_window = Tk()
 main_window.geometry('1600x1200')
 main_window.title("Pueblo Cooperative Care")
 
 
-# Opens file explorer
+# Open file explorer method
 def browseFiles():
     global filepath
 
@@ -40,6 +40,8 @@ def browseFiles():
                                                       "*.*")))
 
     filepath = os.path.abspath(filename)
+
+
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ All Features Working Except: pdf_print() @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Not Yet Built: Save_As_PDF fuction @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -294,33 +296,43 @@ btn_AR_Summary = Button(main_window, text="AR Summary", command=create_AR_Summar
 btn_AR_Summary.place(x=50, y=200)
 
 
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Duplicate Code from 'AP Summary' Section Above For Each Section  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 
 # Creates 'Assets Liabilities' window
 
-def create_Assets_Liabilities_frame():
+def create_assets_liabilities_Summary_frame():
+    # Creates GUI object and sets size of GUI
+    al_summary_window = Tk()
+    al_summary_window.geometry('1600x1200')
 
-    assets_liabilites_window = Tk()
-    assets_liabilites_window.geometry('1600x1200')
+    # Hides 'Main Screen' GUI
+    main_window.withdraw()
 
-    main_window.destroy()
+    # Sets title of Assets Liabilities' File Upload' GUI
+    al_summary_window.title('AL Summary File Upload')
 
-    assets_liabilites_window.title('Assets Liabilities File Upload')
-    txt_file = Text(assets_liabilites_window, height=4,
-                    width=120, bg='white', fg='black', )
-    txt_file.place(x=100, y=350)
+    # Creates textbox for Assets Liabilities' GUI and sets location on GUI
+    al_txt_file = Text(al_summary_window, height=4,
+                       width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+    al_txt_file.place(x=100, y=350)
 
-    btn_file_upload = Button(assets_liabilites_window, text="Select File", command=browseFiles,
-                             width=20, height=3, fg='green')
+    # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
+    btn_home = Button(al_summary_window, text="Back to Main", command=lambda: [al_summary_window.destroy(), main_window.deiconify()],
+                      width=20, height=3, fg='green')
 
-    btn_file_upload.place(x=950, y=350)
+    # Button for selecting Assets Liabilities' file for upload and location on Assets Liabilities' GUI
+    btn_home.place(x=100, y=550)
+    btn_file_upload = Button(al_summary_window, text="Find File", command=lambda: [al_txt_file.configure(state='normal'), al_txt_file.delete('1.0', "end"),
+                                                                                   browseFiles(), al_txt_file.insert(INSERT, filepath),
+                                                                                   al_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+    btn_file_upload.place(x=400, y=550)
 
-    assets_liabilites_window.mainloop()
+    al_summary_window.mainloop()
 
 
 # Creates Button on main window for 'Statement of Assets-Liabilities' Option
 btn_Assets_Liabilities = Button(main_window, text="Statement of Assets-Liabilities",
-                                command=create_Assets_Liabilities_frame, width=40, height=3, fg='green')
+                                command=create_assets_liabilities_Summary_frame, width=40, height=3, fg='green')
 btn_Assets_Liabilities.place(x=50, y=300)
 
 # Creates 'Revenue and Expenses' window
@@ -331,18 +343,27 @@ def create_Revenue_Expenses_frame():
     revenues_expsenses_window = Tk()
     revenues_expsenses_window.geometry('1600x1200')
 
-    main_window.destroy()
+    # Hides 'Main Screen' GUI
+    main_window.withdraw()
 
-    revenues_expsenses_window.title('Revenue and Expenses File Upload')
+    # Sets title of 'Revenue and Expenses' GUI
+    revenues_expsenses_window.title('AR Summary File Upload')
 
-    txt_file = Text(revenues_expsenses_window, height=4,
-                    width=120, bg='white', fg='black', )
-    txt_file.place(x=100, y=350)
+    # Creates textbox for 'Revenue and Expenses' GUI and sets location on GUI
+    re_txt_file = Text(revenues_expsenses_window, height=4,
+                       width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+    re_txt_file.place(x=100, y=350)
 
-    btn_file_upload = Button(revenues_expsenses_window, text="Select File", command=browseFiles,
-                             width=20, height=3, fg='green')
+    # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
+    btn_home = Button(revenues_expsenses_window, text="Back to Main", command=lambda: [revenues_expsenses_window.destroy(), main_window.deiconify()],
+                      width=20, height=3, fg='green')
 
-    btn_file_upload.place(x=950, y=350)
+    # Button for selecting 'Revenue and Expenses' file for upload and location on ''Revenue and Expenses' GUI
+    btn_home.place(x=100, y=550)
+    btn_file_upload = Button(revenues_expsenses_window, text="Find File", command=lambda: [re_txt_file.configure(state='normal'), re_txt_file.delete('1.0', "end"),
+                                                                                           browseFiles(), re_txt_file.insert(INSERT, filepath),
+                                                                                           re_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+    btn_file_upload.place(x=400, y=550)
 
     revenues_expsenses_window.mainloop()
 
@@ -354,25 +375,32 @@ btn_Revenue_Expenses.place(x=50, y=400)
 
 # Creates 'Revenue and Expenses Comparison' window
 
-
 def create_Revenue_Expenses_Comparison_frame():
 
     revenues_expsenses_comparison_window = Tk()
     revenues_expsenses_comparison_window .geometry('1600x1200')
 
-    main_window.destroy()
+    # Hides 'Main Screen' GUI
+    main_window.withdraw()
 
-    revenues_expsenses_comparison_window.title(
-        'Revenue and Expenses Comparison File Upload')
+    # Sets title of 'Revenue and Expenses Comparison' GUI
+    revenues_expsenses_comparison_window.title('AR Summary File Upload')
 
-    txt_file = Text(revenues_expsenses_comparison_window, height=4,
-                    width=120, bg='white', fg='black', )
-    txt_file.place(x=100, y=350)
+    # Creates textbox for 'Revenue and Expenses Comparison' GUI and sets location on GUI
+    re_C_txt_file = Text(revenues_expsenses_comparison_window, height=4,
+                         width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+    re_C_txt_file.place(x=100, y=350)
 
-    btn_file_upload = Button(revenues_expsenses_comparison_window, text="Select File", command=browseFiles,
-                             width=20, height=3, fg='green')
+    # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
+    btn_home = Button(revenues_expsenses_comparison_window, text="Back to Main", command=lambda: [revenues_expsenses_comparison_window.destroy(), main_window.deiconify()],
+                      width=20, height=3, fg='green')
 
-    btn_file_upload.place(x=950, y=350)
+    # Button for selecting 'Revenue and Expenses Comparison' file for upload and location on 'Revenue and Expenses Comparison' GUI
+    btn_home.place(x=100, y=550)
+    btn_file_upload = Button(revenues_expsenses_comparison_window, text="Find File", command=lambda: [re_C_txt_file.configure(state='normal'), re_C_txt_file.delete('1.0', "end"),
+                                                                                                      browseFiles(), re_C_txt_file.insert(INSERT, filepath),
+                                                                                                      re_C_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+    btn_file_upload.place(x=400, y=550)
 
     revenues_expsenses_comparison_window.mainloop()
 
@@ -384,25 +412,32 @@ btn_Revenue_Expenses_Comparison.place(x=50, y=500)
 
 # Creates 'Revenue and Expenses Compared to Budget' window
 
-
 def create_Revenue_Expenses_Budget_frame():
 
     revenues_expsenses_budget_window = Tk()
     revenues_expsenses_budget_window .geometry('1600x1200')
 
-    main_window.destroy()
+   # Hides 'Main Screen' GUI
+    main_window.withdraw()
 
-    revenues_expsenses_budget_window.title(
-        'Revenue and Expenses Budget File Upload')
+    # Sets title of 'Revenue and Expenses Compared to Budget' GUI
+    revenues_expsenses_budget_window.title('AR Summary File Upload')
 
-    txt_file = Text(revenues_expsenses_budget_window, height=4,
-                    width=120, bg='white', fg='black', )
-    txt_file.place(x=100, y=350)
+    # Creates textbox for 'Revenue and Expenses Compared to Budget' GUI and sets location on GUI
+    re_B_txt_file = Text(revenues_expsenses_budget_window, height=4,
+                         width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+    re_B_txt_file.place(x=100, y=350)
 
-    btn_file_upload = Button(revenues_expsenses_budget_window, text="Select File", command=browseFiles,
-                             width=20, height=3, fg='green')
+    # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
+    btn_home = Button(revenues_expsenses_budget_window, text="Back to Main", command=lambda: [revenues_expsenses_budget_window.destroy(), main_window.deiconify()],
+                      width=20, height=3, fg='green')
 
-    btn_file_upload.place(x=950, y=350)
+    # Button for selecting 'Revenue and Expenses Compared to Budget' file for upload and location on 'Revenue and Expenses Compared to Budget' GUI
+    btn_home.place(x=100, y=550)
+    btn_file_upload = Button(revenues_expsenses_budget_window, text="Find File", command=lambda: [re_B_txt_file.configure(state='normal'), re_B_txt_file.delete('1.0', "end"),
+                                                                                                  browseFiles(), re_B_txt_file.insert(INSERT, filepath),
+                                                                                                  re_B_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+    btn_file_upload.place(x=400, y=550)
 
     revenues_expsenses_budget_window.mainloop()
 
@@ -414,25 +449,32 @@ btn_Revenue_Expenses_Budget.place(x=50, y=600)
 
 # Creates 'Revenue and Expenses by Program' window
 
-
 def create_Revenue_Expenses_Program_frame():
 
     revenues_expsenses_program_window = Tk()
     revenues_expsenses_program_window .geometry('1600x1200')
 
-    main_window.destroy()
+    # Hides 'Main Screen' GUI
+    main_window.withdraw()
 
-    revenues_expsenses_program_window.title(
-        'Revenue and Expenses by Program File Upload')
+    # Sets title of 'Revenue and Expenses by Program' GUI
+    revenues_expsenses_program_window.title('AR Summary File Upload')
 
-    txt_file = Text(revenues_expsenses_program_window, height=4,
-                    width=120, bg='white', fg='black', )
-    txt_file.place(x=100, y=350)
+    # Creates textbox for 'Revenue and Expenses by Program' GUI and sets location on GUI
+    re_P_txt_file = Text(revenues_expsenses_program_window, height=4,
+                         width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+    re_P_txt_file.place(x=100, y=350)
 
-    btn_file_upload = Button(revenues_expsenses_program_window, text="Select File", command=browseFiles,
-                             width=20, height=3, fg='green')
+    # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
+    btn_home = Button(revenues_expsenses_program_window, text="Back to Main", command=lambda: [revenues_expsenses_program_window.destroy(), main_window.deiconify()],
+                      width=20, height=3, fg='green')
 
-    btn_file_upload.place(x=950, y=350)
+    # Button for selecting 'Revenue and Expenses by Program' file for upload and location on 'AR Summary Frame' GUI
+    btn_home.place(x=100, y=550)
+    btn_file_upload = Button(revenues_expsenses_program_window, text="Find File", command=lambda: [re_P_txt_file.configure(state='normal'), re_P_txt_file.delete('1.0', "end"),
+                                                                                                   browseFiles(), re_P_txt_file.insert(INSERT, filepath),
+                                                                                                   re_P_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+    btn_file_upload.place(x=400, y=550)
 
     revenues_expsenses_program_window.mainloop()
 
@@ -442,6 +484,8 @@ btn_Revenue_Expenses_Program = Button(main_window, text="Statement of Revenue an
                                       command=create_Revenue_Expenses_Program_frame, width=40, height=3, fg='green')
 btn_Revenue_Expenses_Program.place(x=50, y=700)
 
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Exit button to close program
 btn_exit = Button(main_window, text="Exit",
                   command=main_window.destroy, width=40, height=3, fg='green')
