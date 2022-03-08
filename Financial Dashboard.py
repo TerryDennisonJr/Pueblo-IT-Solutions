@@ -21,7 +21,7 @@ import tempfile
 import subprocess
 import tempfile
 
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates main window of program
 main_window = Tk()
 main_window.geometry('1600x1200')
@@ -41,10 +41,7 @@ def browseFiles():
 
     filepath = os.path.abspath(filename)
 
-
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ All Features Working Except: pdf_print() @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Not Yet Built: Save_As_PDF fuction @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ AP Summary Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates AP Summmary window
 
 
@@ -169,8 +166,9 @@ btn_AP_Summary = Button(main_window, text="AP Summary", command=create_AP_Summar
                         width=40, height=3, fg='green')
 btn_AP_Summary.place(x=50, y=100)
 
-
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ AR Summary Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates AR Summmary window
+
 
 def create_AR_Summary_frame():
 
@@ -295,10 +293,9 @@ btn_AR_Summary = Button(main_window, text="AR Summary", command=create_AR_Summar
                         width=40, height=3, fg='green')
 btn_AR_Summary.place(x=50, y=200)
 
-
-
-
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Assets Liabilites Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates 'Assets Liabilities' window
+
 
 def create_assets_liabilities_Summary_frame():
     # Creates GUI object and sets size of GUI
@@ -320,12 +317,104 @@ def create_assets_liabilities_Summary_frame():
     btn_home = Button(al_summary_window, text="Back to Main", command=lambda: [al_summary_window.destroy(), main_window.deiconify()],
                       width=20, height=3, fg='green')
 
-    # Button for selecting Assets Liabilities' file for upload and location on Assets Liabilities' GUI
     btn_home.place(x=100, y=550)
+
+    # Button for selecting Assets Liabilities' file for upload and location on Assets Liabilities' GUI
     btn_file_upload = Button(al_summary_window, text="Find File", command=lambda: [al_txt_file.configure(state='normal'), al_txt_file.delete('1.0', "end"),
                                                                                    browseFiles(), al_txt_file.insert(INSERT, filepath),
                                                                                    al_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
+
+    def analyze_AL_summary():
+        df = pd.read_excel(
+            filepath, sheet_name=1)
+
+        # captured data points for total assets
+        prev_year_total_assets = (df['Unnamed: 8'][47])
+        current_year_total_assets = (df['Unnamed: 6'][47])
+
+        # captured data points for total liabilities
+        prev_year_total_liabilities = (df['Unnamed: 8'][68])
+        current_year_total_liabilities = (df['Unnamed: 6'][68])
+
+        # captured data points for total equity
+        prev_year_total_equity = (df['Unnamed: 8'][78])
+        current_year_total_equity = (df['Unnamed: 6'][78])
+
+        # Creates GUI for 'Assets Liabilites' data
+        al_analyze_window = Tk()
+        al_analyze_window.geometry('1900x1200')
+        al_analyze_window.title("Test")
+        al_analyze_window.state('zoomed')
+
+        # increases size of entire seaborn contents
+        sns.set_theme(font_scale=1.5)
+
+        # Create total assets bar graph
+        def create_total_assets_bar():
+
+            sns.set_palette(['orange', 'purple'])
+            ta_axs = sns.catplot(x=['Jan 1, 22', 'Jan 1, 21'], y=[current_year_total_assets, prev_year_total_assets],
+                                 data=df, kind='bar')
+            ta_axs.fig.suptitle('Total Assets Summary')
+            plt.xlabel("Year")
+            plt.ylabel("$ Amount (In Millions) ")
+
+            ax = ta_axs.axes[0, 0]
+            plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
+            ta_axs.fig.set_size_inches(8.5, 7)
+            return ta_axs.fig
+
+        ta_fig = create_total_assets_bar()
+        canvas = FigureCanvasTkAgg(ta_fig, master=al_analyze_window)
+        canvas.draw()
+
+        canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
+
+        # creates total liabilities bar graph
+        def create_total_liabilities_bar():
+            sns.set_palette(['red', 'green'])
+            tl_axs = sns.catplot(x=['Jan 1, 22', 'Jan 1, 21'], y=[current_year_total_liabilities, prev_year_total_liabilities],
+                                 data=df, kind='bar')
+            tl_axs.fig.suptitle('Total Liabilities Summary')
+            plt.xlabel("Year")
+            plt.ylabel("$ Amount")
+
+            ax = tl_axs.axes[0, 0]
+            plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
+            tl_axs.fig.set_size_inches(8.5, 7)
+            return tl_axs.fig
+
+        tl_fig = create_total_liabilities_bar()
+        canvas = FigureCanvasTkAgg(tl_fig, master=al_analyze_window)
+        canvas.draw()
+
+        canvas.get_tk_widget().place(relx=.5, rely=.5, anchor=CENTER)
+
+        # create total equity bar graph
+        def create_total_equity_bar():
+            sns.set_palette(['teal', 'grey'])
+            te_axs = sns.catplot(x=['Jan 1, 22', 'Jan 1, 21'], y=[current_year_total_equity, prev_year_total_equity],
+                                 data=df, kind='bar')
+            te_axs.fig.suptitle('Total Equity Summary')
+            plt.xlabel("Year")
+            plt.ylabel("$ Amount (In Millions) ")
+
+            ax = te_axs.axes[0, 0]
+            plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
+            te_axs.fig.set_size_inches(8.5, 7)
+            return te_axs.fig
+
+        te_fig = create_total_equity_bar()
+        canvas = FigureCanvasTkAgg(te_fig, master=al_analyze_window)
+        canvas.draw()
+        canvas.get_tk_widget().place(relx=.83, rely=.5, anchor=CENTER)
+
+        al_analyze_window.mainloop()
+
+    btn_analyze = Button(al_summary_window, text="Analyze File", command=analyze_AL_summary,
+                         width=20, height=3, fg='green')
+    btn_analyze.place(x=700, y=550)
 
     al_summary_window.mainloop()
 
@@ -336,6 +425,8 @@ btn_Assets_Liabilities = Button(main_window, text="Statement of Assets-Liabiliti
 btn_Assets_Liabilities.place(x=50, y=300)
 
 # Creates 'Revenue and Expenses' window
+
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue Expenses Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 def create_Revenue_Expenses_frame():
@@ -373,6 +464,8 @@ btn_Revenue_Expenses = Button(main_window, text="Statement of Revenue and Expens
                               command=create_Revenue_Expenses_frame, width=40, height=3, fg='green')
 btn_Revenue_Expenses.place(x=50, y=400)
 
+
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue and Expenses Comparison Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates 'Revenue and Expenses Comparison' window
 
 def create_Revenue_Expenses_Comparison_frame():
@@ -412,6 +505,9 @@ btn_Revenue_Expenses_Comparison.place(x=50, y=500)
 
 # Creates 'Revenue and Expenses Compared to Budget' window
 
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue Expenses Budget Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
 def create_Revenue_Expenses_Budget_frame():
 
     revenues_expsenses_budget_window = Tk()
@@ -447,6 +543,8 @@ btn_Revenue_Expenses_Budget = Button(main_window, text="Statement of Revenue and
                                      command=create_Revenue_Expenses_Budget_frame, width=40, height=3, fg='green')
 btn_Revenue_Expenses_Budget.place(x=50, y=600)
 
+
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue Expnese by Program Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates 'Revenue and Expenses by Program' window
 
 def create_Revenue_Expenses_Program_frame():
@@ -485,7 +583,7 @@ btn_Revenue_Expenses_Program = Button(main_window, text="Statement of Revenue an
 btn_Revenue_Expenses_Program.place(x=50, y=700)
 
 
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Exit button to close program
 btn_exit = Button(main_window, text="Exit",
                   command=main_window.destroy, width=40, height=3, fg='green')
@@ -494,7 +592,7 @@ btn_exit.place(x=1150, y=900)
 # loads Pueblo Cooperative Care image
 # Will need to be changed so can be accessed globally
 load = Image.open(
-    "/Users/terrydennison/Desktop/Python/Spyder/Pueblo IT/Pueblo-Coop-Center-History.gif")
+    "Pueblo-Coop-Center-History.gif")
 render = ImageTk.PhotoImage((load))
 photo = Label(main_window, image=render)
 photo.place(x=600, y=100)
