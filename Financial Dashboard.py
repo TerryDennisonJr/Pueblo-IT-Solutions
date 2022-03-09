@@ -495,11 +495,103 @@ def create_Revenue_Expenses_Comparison_frame():
                                                                                                       re_C_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
 
+    def analyze_revenue_expenses_comparision():
+        df = pd.read_excel(
+            filepath, sheet_name=1)
+
+        revenues_expsenses_comparison_window.withdraw()
+
+        # Food Sack
+        prev_year_expenses_food_sack = (df['Unnamed: 9'][103])
+        current_year_expenses_food_sack = (df['Unnamed: 7'][103])
+        delta_food_sack = (df['Unnamed: 11'][103])
+
+        # NOW Program
+        prev_year_expenses_now = (df['Unnamed: 9'][118])
+        current_year_expenses_now = (df['Unnamed: 7'][118])
+        delta_expenses_now = (df['Unnamed: 11'][118])
+
+        # Mobile Shower
+        prev_year_expenses_mshower = (df['Unnamed: 9'][130])
+        current_expenses_mshower = (df['Unnamed: 7'][130])
+        delta_expenses_mshower = (df['Unnamed: 11'][130])
+
+        repy_analyze_window = Tk()
+        repy_analyze_window.geometry('1900x1200')
+        repy_analyze_window.title("Test")
+        repy_analyze_window.state('zoomed')
+
+        sns.set_theme(font_scale=1.5)
+
+        # for 'Total Assets' Bar Graph
+        def create_food_sack_bar():
+
+            sns.set_palette(['orange', 'purple', 'grey'])
+            fs_axs = sns.catplot(x=['Current Year', 'Previous Year', '$ Change'], y=[current_year_expenses_food_sack, prev_year_expenses_food_sack, delta_food_sack],
+                                 data=df, kind='bar')
+            fs_axs.fig.suptitle('Food Sack Expenses')
+            plt.xlabel("Dates")
+            plt.ylabel("$ Amount")
+            plt.ylim(0, None)
+            ax = fs_axs.axes[0, 0]
+            plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
+            fs_axs.fig.set_size_inches(8.5, 7)
+            return fs_axs.fig
+
+        fs_fig = create_food_sack_bar()
+        canvas = FigureCanvasTkAgg(fs_fig, master=repy_analyze_window)
+        canvas.draw()
+
+        canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
+
+        def create_now_bar():
+            sns.set_palette(['red', 'green', 'teal'])
+            now_axs = sns.catplot(x=['Current Year', 'Previous Year', '$ Change'], y=[current_year_expenses_now, prev_year_expenses_now, delta_expenses_now],
+                                  data=df, kind='bar')
+            now_axs.fig.suptitle('NOW Expenses')
+            plt.xlabel("Programs")
+            plt.ylabel("$ Amount")
+            plt.ylim(0, None)
+            ax = now_axs.axes[0, 0]
+            plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
+            now_axs.fig.set_size_inches(8.5, 7)
+            return now_axs.fig
+
+        now_fig = create_now_bar()
+        canvas = FigureCanvasTkAgg(now_fig, master=repy_analyze_window)
+        canvas.draw()
+
+        canvas.get_tk_widget().place(relx=.5, rely=.5, anchor=CENTER)
+
+        def create_mobile_shower_bar():
+            sns.set_palette(['teal', 'grey', 'brown'])
+            ms_axs = sns.catplot(x=['Current Year', 'Previous Year', '$ Change'], y=[current_expenses_mshower, prev_year_expenses_mshower, delta_expenses_mshower],
+                                 data=df, kind='bar')
+            ms_axs.fig.suptitle('Net Income by Program')
+            plt.xlabel("Programs")
+            plt.ylabel("$ Amount")
+            plt.ylim(0, None)
+            ax = ms_axs.axes[0, 0]
+            plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
+            ms_axs.fig.set_size_inches(8.5, 7)
+            return ms_axs.fig
+
+        ms_fig = create_mobile_shower_bar()
+        canvas = FigureCanvasTkAgg(ms_fig, master=repy_analyze_window)
+        canvas.draw()
+        canvas.get_tk_widget().place(relx=.83, rely=.5, anchor=CENTER)
+
+        repy_analyze_window.mainloop()
+
+    btn_rec_analyze = Button(revenues_expsenses_comparison_window, text="Analyze File", command=analyze_revenue_expenses_comparision,
+                             width=20, height=3, fg='green')
+    btn_rec_analyze.place(x=700, y=550)
+
     revenues_expsenses_comparison_window.mainloop()
 
 
 # Creates Button on main window for 'Statement of Assets-Liabilities' Option
-btn_Revenue_Expenses_Comparison = Button(main_window, text="Statement of Revenue and Expenses Comparison",
+btn_Revenue_Expenses_Comparison = Button(main_window, text="Statement of Revenue and Expenses Comparison by Year",
                                          command=create_Revenue_Expenses_Comparison_frame, width=40, height=3, fg='green')
 btn_Revenue_Expenses_Comparison.place(x=50, y=500)
 
@@ -573,6 +665,95 @@ def create_Revenue_Expenses_Program_frame():
                                                                                                    browseFiles(), re_P_txt_file.insert(INSERT, filepath),
                                                                                                    re_P_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
+
+    def analyze_revenue_expenses_program():
+        df = pd.read_excel(
+            filepath, sheet_name=1)
+
+        revenues_expsenses_program_window.withdraw()
+
+        total_income_food_sack = (df['Food Sack'][38])
+        total_income_mobile_shower = (df['Mobile Shower Program'][38])
+        total_income_now = (df['NOW'][38])
+
+        total_expenses_food_sack = (df['Food Sack'][160])
+        total_expenses_mobile_shower = (df['Mobile Shower Program'][160])
+        total_expenses_now = (df['NOW'][160])
+
+        net_income_food_sack = (df['Food Sack'][167])
+        net_income_mobile_shower = (df['Mobile Shower Program'][167])
+        net_income_now = (df['NOW'][167])
+
+        rep_analyze_window = Tk()
+        rep_analyze_window.geometry('1900x1200')
+        rep_analyze_window.title("Test")
+        rep_analyze_window.state('zoomed')
+
+        sns.set_theme(font_scale=1.5)
+        # for 'Total Income' Bar Graph
+
+        def create_total_income_bar():
+
+            sns.set_palette(['orange', 'purple', 'grey'])
+            ti_axs = sns.catplot(x=['Food Sack', 'Mobile Shower', 'NOW'], y=[total_income_food_sack, total_income_mobile_shower, total_income_now],
+                                 data=df, kind='bar')
+            ti_axs.fig.suptitle('Income by Program')
+            plt.xlabel("Programs")
+            plt.ylabel("$ Amount")
+            plt.ylim(0, None)
+            ax = ti_axs.axes[0, 0]
+            plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
+            ti_axs.fig.set_size_inches(8.5, 7)
+            return ti_axs.fig
+
+        ta_fig = create_total_income_bar()
+        canvas = FigureCanvasTkAgg(ta_fig, master=rep_analyze_window)
+        canvas.draw()
+
+        canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
+
+        def create_total_expenses_bar():
+            sns.set_palette(['red', 'green', 'teal'])
+            te_axs = sns.catplot(x=['Food Sack', 'Mobile Shower', 'NOW'], y=[total_expenses_food_sack, total_expenses_mobile_shower, total_expenses_now],
+                                 data=df, kind='bar')
+            te_axs.fig.suptitle('Expenses by Program')
+            plt.xlabel("Programs")
+            plt.ylabel("$ Amount")
+            plt.ylim(0, None)
+            ax = te_axs.axes[0, 0]
+            plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
+            te_axs.fig.set_size_inches(8.5, 7)
+            return te_axs.fig
+
+        tl_fig = create_total_expenses_bar()
+        canvas = FigureCanvasTkAgg(tl_fig, master=rep_analyze_window)
+        canvas.draw()
+
+        canvas.get_tk_widget().place(relx=.5, rely=.5, anchor=CENTER)
+
+        def create_net_income_bar():
+            sns.set_palette(['teal', 'grey', 'brown'])
+            ni_axs = sns.catplot(x=['Food Sack', 'Mobile Shower', 'NOW'], y=[net_income_food_sack, net_income_mobile_shower, net_income_now],
+                                 data=df, kind='bar')
+            ni_axs.fig.suptitle('Net Income by Program')
+            plt.xlabel("Programs")
+            plt.ylabel("$ Amount")
+            plt.ylim(0, None)
+            ax = ni_axs.axes[0, 0]
+            plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
+            ni_axs.fig.set_size_inches(8.5, 7)
+            return ni_axs.fig
+
+        te_fig = create_net_income_bar()
+        canvas = FigureCanvasTkAgg(te_fig, master=rep_analyze_window)
+        canvas.draw()
+        canvas.get_tk_widget().place(relx=.83, rely=.5, anchor=CENTER)
+
+        rep_analyze_window.mainloop()
+
+    btn_rep_analyze = Button(revenues_expsenses_program_window, text="Analyze File", command=analyze_revenue_expenses_program,
+                             width=20, height=3, fg='green')
+    btn_rep_analyze.place(x=700, y=550)
 
     revenues_expsenses_program_window.mainloop()
 
