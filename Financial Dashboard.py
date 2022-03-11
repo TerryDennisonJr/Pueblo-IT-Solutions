@@ -149,7 +149,12 @@ def create_AP_Summary_frame():
                          width=20, height=3, fg='green')
         btn_pdf.place(x=500, y=550)
 
+        btn_main = Button(ap_analyze_window, text="Back to Main", command=lambda: [ap_analyze_window.withdraw(), main_window.deiconify()],
+                         width=20, height=3, fg='green')
+        btn_main.place(x=900, y=550)
+              
         # Display's 'AP Analyze' GUI frame
+
         ap_analyze_window.mainloop()
 
     # Button event handler for calling 'analyze_ap_summary' function and button position
@@ -272,7 +277,7 @@ def create_AR_Summary_frame():
         btn_print.place(x=100, y=550)
 
         # WIP Button for saving file as 'PDF' and button position
-        btn_pdf = Button(ar_analyze_window, text="Save as PDF", command=lambda: [ar_summary_window.destroy(), main_window.deiconify()],
+        btn_pdf = Button(ar_analyze_window, text="Save as PDF", command=lambda: [ar_analyze_window.withdraw(), main_window.deiconify()],
                          width=20, height=3, fg='green')
         btn_pdf.place(x=500, y=550)
 
@@ -410,9 +415,37 @@ def create_assets_liabilities_Summary_frame():
         canvas.draw()
         canvas.get_tk_widget().place(relx=.83, rely=.5, anchor=CENTER)
 
-        al_analyze_window.mainloop()
+        def pdf_Print():
+            f = 5
+          # fp = tempfile.TemporaryFile()
+          # fp.write(ap_analyze_window)
 
-    btn_analyze = Button(al_summary_window, text="Analyze File", command=analyze_AL_summary,
+          # ps = canvas..postscript(colormode='color')
+          # img = Image.open(io.BytesIO(ps.encode('utf-8')))
+          # img.save('filename.jpg', 'jpeg')
+
+          # postscript_file = "tmp_snapshot.ps"
+          # subprocess.call(["impg", "-window", "td", postscript_file])
+
+        # WIP Button for Printing 'Canvas' and button position
+        btn_print = Button(al_analyze_window, text="Print as PDF", command=pdf_Print(),
+                           width=20, height=3, fg='green')
+
+        btn_print.place(x=100, y=550)
+
+        # WIP Button for saving file as 'PDF' and button position
+        btn_pdf = Button(al_analyze_window, text="Save as PDF", command=lambda: [al_summary_window.destroy(), main_window.deiconify()],
+                         width=20, height=3, fg='green')
+        btn_pdf.place(x=500, y=550)
+
+        btn_main = Button(al_analyze_window, text="Back to Main", command=lambda: [al_analyze_window.withdraw(), main_window.deiconify()],
+                         width=20, height=3, fg='green')
+        btn_main.place(x=900, y=550)
+        al_summary_window.withdraw()
+        al_analyze_window.mainloop()
+        
+
+    btn_analyze = Button(al_summary_window, text="Analyze File", command= analyze_AL_summary,
                          width=20, height=3, fg='green')
     btn_analyze.place(x=700, y=550)
 
