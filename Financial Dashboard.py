@@ -24,7 +24,7 @@ import tempfile
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates main window of program
 main_window = Tk()
-main_window.geometry('1600x1200')
+main_window.geometry('1600x1600')
 main_window.title("Pueblo Cooperative Care")
 
 
@@ -48,7 +48,8 @@ def browseFiles():
 def create_AP_Summary_frame():
     # Creates GUI object and sets size of GUI
     ap_summary_window = Tk()
-    ap_summary_window.geometry('1600x1200')
+    ap_summary_window.geometry('1600x1600')
+    ap_summary_window.title("AP Summary")
 
     # Hides 'Main Screen' GUI
     main_window.withdraw()
@@ -92,8 +93,9 @@ def create_AP_Summary_frame():
             return axs.fig
         # Creates window for graphical display of data and size of GUI frame
         ap_analyze_window = Tk()
-        ap_analyze_window.geometry('1900x1200')
-        ap_analyze_window.state('zoomed')
+        ap_analyze_window.geometry('1600x1600')
+
+        ap_analyze_window.title("AP Summary")
         # Calls create_plot() function to put 'grouped bar chart' in 'Canvas' frame
         figure = create_plot()
         canvas = FigureCanvasTkAgg(figure, master=ap_analyze_window)
@@ -150,9 +152,9 @@ def create_AP_Summary_frame():
         btn_pdf.place(x=500, y=550)
 
         btn_main = Button(ap_analyze_window, text="Back to Main", command=lambda: [ap_analyze_window.withdraw(), main_window.deiconify()],
-                         width=20, height=3, fg='green')
+                          width=20, height=3, fg='green')
         btn_main.place(x=900, y=550)
-              
+
         # Display's 'AP Analyze' GUI frame
 
         ap_analyze_window.mainloop()
@@ -179,7 +181,7 @@ def create_AR_Summary_frame():
 
     # Creates GUI object and sets size of GUI
     ar_summary_window = Tk()
-    ar_summary_window.geometry('1600x1200')
+    ar_summary_window.geometry('1600x1600')
 
     # Hides 'Main Screen' GUI
     main_window.withdraw()
@@ -222,13 +224,14 @@ def create_AR_Summary_frame():
             return axs.fig
         # Creates window for grARhical display of data and size of GUI frame
         ar_analyze_window = Tk()
-        ar_analyze_window.geometry('1900x1200')
-        ar_analyze_window.state('zoomed')
-        ar_analyze_window.title("AR Summary Calculations")
+        ar_analyze_window.geometry('1600x1600')
+
+        ar_analyze_window.title("AR Summary")
         # Calls create_plot() function to put 'grouped bar chart' in 'Canvas' frame
         figure = create_plot()
         canvas = FigureCanvasTkAgg(figure, master=ar_analyze_window)
         canvas.draw()
+
         # Sets position of created 'Canvas'
         canvas.get_tk_widget().pack(side='top')
         canvas.get_tk_widget().place(bordermode=OUTSIDE)
@@ -244,6 +247,7 @@ def create_AR_Summary_frame():
 
         plt.title("AR Summary Totals")
 
+        # Cretes bar graph
         pie_graph = plt.pie(pie_data, labels=pie_labels, colors=colors,
                             autopct='%.0f%%', pctdistance=.5, explode=[0.1]*3, textprops={"fontsize": 11.9}, shadow=True)
         plt.legend()
@@ -281,6 +285,10 @@ def create_AR_Summary_frame():
                          width=20, height=3, fg='green')
         btn_pdf.place(x=500, y=550)
 
+        btn_main = Button(ar_analyze_window, text="Back to Main", command=lambda: [ar_analyze_window.withdraw(), main_window.deiconify()],
+                          width=20, height=3, fg='green')
+        btn_main.place(x=900, y=550)
+
         # Display's 'AR Analyze' GUI frame
         ar_analyze_window.mainloop()
 
@@ -305,13 +313,13 @@ btn_AR_Summary.place(x=50, y=200)
 def create_assets_liabilities_Summary_frame():
     # Creates GUI object and sets size of GUI
     al_summary_window = Tk()
-    al_summary_window.geometry('1600x1200')
-
+    al_summary_window.geometry('1600x1600')
+    
     # Hides 'Main Screen' GUI
     main_window.withdraw()
 
     # Sets title of Assets Liabilities' File Upload' GUI
-    al_summary_window.title('AL Summary File Upload')
+    al_summary_window.title('Assets Liabilites Summary File Upload')
 
     # Creates textbox for Assets Liabilities' GUI and sets location on GUI
     al_txt_file = Text(al_summary_window, height=4,
@@ -348,9 +356,8 @@ def create_assets_liabilities_Summary_frame():
 
         # Creates GUI for 'Assets Liabilites' data
         al_analyze_window = Tk()
-        al_analyze_window.geometry('1900x1200')
-        al_analyze_window.title("Test")
-        al_analyze_window.state('zoomed')
+        al_analyze_window.geometry('1600x1600')
+        al_analyze_window.title("Assets Liabilites Summary")
 
         # increases size of entire seaborn contents
         sns.set_theme(font_scale=1.5)
@@ -439,13 +446,12 @@ def create_assets_liabilities_Summary_frame():
         btn_pdf.place(x=500, y=550)
 
         btn_main = Button(al_analyze_window, text="Back to Main", command=lambda: [al_analyze_window.withdraw(), main_window.deiconify()],
-                         width=20, height=3, fg='green')
+                          width=20, height=3, fg='green')
         btn_main.place(x=900, y=550)
         al_summary_window.withdraw()
         al_analyze_window.mainloop()
-        
 
-    btn_analyze = Button(al_summary_window, text="Analyze File", command= analyze_AL_summary,
+    btn_analyze = Button(al_summary_window, text="Analyze File", command=analyze_AL_summary,
                          width=20, height=3, fg='green')
     btn_analyze.place(x=700, y=550)
 
@@ -457,21 +463,20 @@ btn_Assets_Liabilities = Button(main_window, text="Statement of Assets-Liabiliti
                                 command=create_assets_liabilities_Summary_frame, width=40, height=3, fg='green')
 btn_Assets_Liabilities.place(x=50, y=300)
 
-# Creates 'Revenue and Expenses' window
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue Expenses Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-
+# Creates 'Revenue and Expenses' window
 def create_Revenue_Expenses_frame():
 
     revenues_expsenses_window = Tk()
-    revenues_expsenses_window.geometry('1600x1200')
+    revenues_expsenses_window.geometry('1600x1600')
 
     # Hides 'Main Screen' GUI
     main_window.withdraw()
 
     # Sets title of 'Revenue and Expenses' GUI
-    revenues_expsenses_window.title('AR Summary File Upload')
+    revenues_expsenses_window.title('Revenue and Expneses Summary File Upload')
 
     # Creates textbox for 'Revenue and Expenses' GUI and sets location on GUI
     re_txt_file = Text(revenues_expsenses_window, height=4,
@@ -489,6 +494,88 @@ def create_Revenue_Expenses_frame():
                                                                                            re_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
 
+    def analyze_revenue_expenses():
+        df = pd.read_excel(
+            filepath, sheet_name=1)
+
+        revenues_expsenses_window.withdraw()
+
+        # Income from Mobile Shower Program from Excel sheet
+        current_month = df['Unnamed: 6'][0]
+        prev_year = df['Unnamed: 8'][0]
+
+        currrent_month_income_mshower = (df['Unnamed: 6'][37])
+        prev_year_income_mshower = (df['Unnamed: 8'][37])
+
+        # Capture 'Expenses' datapoints for Excel
+        currrent_month_expenses_food_sack = (df['Unnamed: 6'][88])
+        prev_year_expenses_food_sack = (df['Unnamed: 8'][88])
+
+        currrent_month_expenses_now = (df['Unnamed: 6'][103])
+        prev_year_expenses_now = (df['Unnamed: 8'][103])
+
+        currrent_month_expenses_mshower = (df['Unnamed: 6'][115])
+        prev_year_expenses_mshower = (df['Unnamed: 8'][115])
+
+        fig, ax = plt.subplots(1, 1)
+
+        data = [['Food Sack', currrent_month_expenses_food_sack, prev_year_expenses_food_sack],
+                ['Nutrition on Wheels', currrent_month_expenses_now,
+                    prev_year_expenses_now],
+                ['Mobile Shower', currrent_month_expenses_mshower,
+                    prev_year_expenses_mshower]
+                ]
+
+        df2 = pd.DataFrame(data=data)
+
+        # Creates 'Revenue and Expness Current Year' bar grpah
+        def create_plot():
+            axs = sns.catplot(x=0, y=1,
+                              data=df2, kind='bar')
+            axs.fig.suptitle('Current Program Expenses')
+            axs.fig.set_size_inches(8.5, 7)
+            plt.ylabel('Amount ($)')
+            plt.xlabel('Programs')
+            return axs.fig
+
+        # Creates 'Revenue and Expness Previous Year' bar grpah
+        def create_prev_year_plot():
+
+            axs2 = sns.catplot(x=0, y=2,
+                               data=df2, kind='bar')
+            axs2.fig.suptitle('Previous Year Program Expenses')
+            axs2.fig.set_size_inches(8.5, 7)
+            plt.ylabel('Amount ($)')
+            plt.xlabel('Programs')
+            return axs2.fig
+
+        current_fig = create_plot()
+        prev_fig = create_prev_year_plot()
+
+        rev_exp_analyze_window = Tk()
+        rev_exp_analyze_window.geometry('1600x1600')
+        rev_exp_analyze_window.title("Revenue and Expneses Summary")
+
+        canvas = FigureCanvasTkAgg(current_fig, master=rev_exp_analyze_window)
+        canvas2 = FigureCanvasTkAgg(prev_fig, master=rev_exp_analyze_window)
+
+        canvas.draw()
+        canvas2.draw()
+
+        canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
+
+        canvas2.get_tk_widget().place(relx=.50, rely=.5, anchor=CENTER)
+
+        btn_main = Button(rev_exp_analyze_window, text="Back to Main", command=lambda: [rev_exp_analyze_window.withdraw(), main_window.deiconify()],
+                          width=20, height=3, fg='green')
+        btn_main.place(x=900, y=550)
+
+        rev_exp_analyze_window.mainloop()
+
+    btn_rev_exp_analyze = Button(revenues_expsenses_window, text="Analyze File", command=analyze_revenue_expenses,
+                                 width=20, height=3, fg='green')
+    btn_rev_exp_analyze.place(x=700, y=550)
+
     revenues_expsenses_window.mainloop()
 
 
@@ -504,13 +591,14 @@ btn_Revenue_Expenses.place(x=50, y=400)
 def create_Revenue_Expenses_Comparison_frame():
 
     revenues_expsenses_comparison_window = Tk()
-    revenues_expsenses_comparison_window .geometry('1600x1200')
+    revenues_expsenses_comparison_window .geometry('1600x1600')
 
     # Hides 'Main Screen' GUI
     main_window.withdraw()
 
     # Sets title of 'Revenue and Expenses Comparison' GUI
-    revenues_expsenses_comparison_window.title('AR Summary File Upload')
+    revenues_expsenses_comparison_window.title(
+        'Revenue Expneses Comparison Summary File Upload')
 
     # Creates textbox for 'Revenue and Expenses Comparison' GUI and sets location on GUI
     re_C_txt_file = Text(revenues_expsenses_comparison_window, height=4,
@@ -528,6 +616,7 @@ def create_Revenue_Expenses_Comparison_frame():
                                                                                                       re_C_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
 
+    # Function for analyzing "Revenue and Expenses" Excel FIle
     def analyze_revenue_expenses_comparision():
         df = pd.read_excel(
             filepath, sheet_name=1)
@@ -550,13 +639,13 @@ def create_Revenue_Expenses_Comparison_frame():
         delta_expenses_mshower = (df['Unnamed: 11'][130])
 
         repy_analyze_window = Tk()
-        repy_analyze_window.geometry('1900x1200')
-        repy_analyze_window.title("Test")
-        repy_analyze_window.state('zoomed')
+        repy_analyze_window.geometry('1600x1600')
+        repy_analyze_window.title(
+            "Revenue and Expenses Comparison by Year Summary")
 
         sns.set_theme(font_scale=1.5)
 
-        # for 'Total Assets' Bar Graph
+        # Creates 'Total Assets' Bar Graph
         def create_food_sack_bar():
 
             sns.set_palette(['orange', 'purple', 'grey'])
@@ -577,6 +666,7 @@ def create_Revenue_Expenses_Comparison_frame():
 
         canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
 
+        # Creates NOW bar graph
         def create_now_bar():
             sns.set_palette(['red', 'green', 'teal'])
             now_axs = sns.catplot(x=['Current Year', 'Previous Year', '$ Change'], y=[current_year_expenses_now, prev_year_expenses_now, delta_expenses_now],
@@ -596,6 +686,7 @@ def create_Revenue_Expenses_Comparison_frame():
 
         canvas.get_tk_widget().place(relx=.5, rely=.5, anchor=CENTER)
 
+        # Creates 'Mobile Shower' Bar graph
         def create_mobile_shower_bar():
             sns.set_palette(['teal', 'grey', 'brown'])
             ms_axs = sns.catplot(x=['Current Year', 'Previous Year', '$ Change'], y=[current_expenses_mshower, prev_year_expenses_mshower, delta_expenses_mshower],
@@ -613,6 +704,10 @@ def create_Revenue_Expenses_Comparison_frame():
         canvas = FigureCanvasTkAgg(ms_fig, master=repy_analyze_window)
         canvas.draw()
         canvas.get_tk_widget().place(relx=.83, rely=.5, anchor=CENTER)
+
+        btn_main = Button(repy_analyze_window, text="Back to Main", command=lambda: [repy_analyze_window.withdraw(), main_window.deiconify()],
+                          width=20, height=3, fg='green')
+        btn_main.place(x=900, y=550)
 
         repy_analyze_window.mainloop()
 
@@ -632,17 +727,20 @@ btn_Revenue_Expenses_Comparison.place(x=50, y=500)
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue Expenses Budget Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+# Mayble include table for negative values??????????????????????????
+
 
 def create_Revenue_Expenses_Budget_frame():
 
     revenues_expsenses_budget_window = Tk()
-    revenues_expsenses_budget_window .geometry('1600x1200')
+    revenues_expsenses_budget_window .geometry('1600x1600')
 
    # Hides 'Main Screen' GUI
     main_window.withdraw()
 
     # Sets title of 'Revenue and Expenses Compared to Budget' GUI
-    revenues_expsenses_budget_window.title('AR Summary File Upload')
+    revenues_expsenses_budget_window.title(
+        'Revenue and Expenses Compared to Budget Summary File Upload')
 
     # Creates textbox for 'Revenue and Expenses Compared to Budget' GUI and sets location on GUI
     re_B_txt_file = Text(revenues_expsenses_budget_window, height=4,
@@ -660,6 +758,147 @@ def create_Revenue_Expenses_Budget_frame():
                                                                                                   re_B_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
 
+    def analyze_revenue_expneses_budget():
+
+        df = pd.read_excel(
+            filepath, sheet_name=1)
+
+        # Capture of datapoints from Excel file
+        current_month_fs = (df['Unnamed: 6'][93])
+        current_month_budget_fs = (df['Unnamed: 8'][93])
+        current_month_obudget_fs = (df['Unnamed: 10'][93])
+
+        current_months_budget_fs = (df['Unnamed: 12'][93])
+        current_ytd_budget_fs = (df['Unnamed: 14'][93])
+        current_ytd_obudget_fs = (df['Unnamed: 16'][93])
+        current_ytd_abudget_fs = (df['Unnamed: 18'][93])
+
+        current_month_now = (df['Unnamed: 6'][108])
+        current_month_budget_now = (df['Unnamed: 8'][108])
+        current_month_obudget_now = (df['Unnamed: 10'][108])
+
+        current_year_budget_now = (df['Unnamed: 12'][108])
+        current_ytd_budget_now = (df['Unnamed: 14'][108])
+        current_ytd_obudget_now = (df['Unnamed: 16'][108])
+        current_ytd_abudget_now = (df['Unnamed: 18'][108])
+
+        current_month_ms = (df['Unnamed: 6'][121])
+        current_month_budget_ms = (df['Unnamed: 8'][121])
+        current_month_obudget_ms = (df['Unnamed: 10'][121])
+
+        current_year_budget_ms = (df['Unnamed: 12'][121])
+        current_ytd_budget_ms = (df['Unnamed: 14'][121])
+        current_ytd_obudget_ms = (df['Unnamed: 16'][121])
+        current_ytd_abudget_ms = (df['Unnamed: 18'][121])
+
+        # Creation of Food Shelter Current Table
+        fs_current_data = [[df['Unnamed: 6'][0], current_month_fs],
+                           [df['Unnamed: 8'][0], current_month_budget_fs],
+                           [df['Unnamed: 10'][0], current_month_obudget_fs]
+                           ]
+
+        reb_exp_analyze_window = Tk()
+        reb_exp_analyze_window.geometry('1600x1600')
+        reb_exp_analyze_window.title(
+            "Revenue and Expenses Compared with Budget Summary")
+
+        fig, ax = plt.subplots(1, 1)
+        ax.axis('off')
+        ax.axis('tight')
+        plt.title("Current Food Shelter Budget")
+        ax.table(fs_current_data, loc='center')
+        canvas = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
+        canvas.draw()
+        canvas.get_tk_widget().place(relx=.17, rely=.2, anchor=CENTER)
+
+        # Creation of Food Shelter YTD Table
+        fs_ytd_data = [[df['Unnamed: 12'][0], current_months_budget_fs],
+                       [df['Unnamed: 14'][0], current_ytd_budget_fs],
+                       [df['Unnamed: 16'][0], current_ytd_obudget_fs],
+                       [df['Unnamed: 18'][0], current_ytd_abudget_fs]]
+
+        fig, ax = plt.subplots(1, 1)
+        ax.axis('off')
+        ax.axis('tight')
+        plt.title("YTD Food Shelter Budget")
+        ax.table(fs_ytd_data, loc='center')
+        canvas2 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
+        canvas2.draw()
+        canvas2.get_tk_widget().place(relx=.17, rely=.6, anchor=CENTER)
+
+        # Creation of NOW Current Table
+
+        now_current_data = [[df['Unnamed: 6'][0], current_month_now],
+                            [df['Unnamed: 8'][0], current_month_budget_now],
+                            [df['Unnamed: 10'][0], current_month_obudget_now]
+                            ]
+
+        fig, ax = plt.subplots(1, 1)
+        ax.axis('off')
+        ax.axis('tight')
+        plt.title("Current NOW Budget")
+        ax.table(now_current_data, loc='center')
+        canvas3 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
+        canvas3.draw()
+        canvas3.get_tk_widget().place(relx=.47, rely=.2, anchor=CENTER)
+
+        # Create of NOW YTD Table
+        now_ytd_data = [[df['Unnamed: 12'][0], current_year_budget_now],
+                        [df['Unnamed: 14'][0], current_ytd_budget_now],
+                        [df['Unnamed: 16'][0], current_ytd_obudget_now],
+                        [df['Unnamed: 18'][0], current_ytd_abudget_now]]
+
+        fig, ax = plt.subplots(1, 1)
+        ax.axis('off')
+        ax.axis('tight')
+        plt.title("YTD NOW Budget")
+        ax.table(now_ytd_data, loc='center')
+        canvas4 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
+        canvas4.draw()
+        canvas4.get_tk_widget().place(relx=.47, rely=.6, anchor=CENTER)
+
+        # Creation of Mobile Show Current Table
+        ms_current_data = [[df['Unnamed: 6'][0], current_month_ms],
+                           [df['Unnamed: 8'][0], current_month_budget_ms],
+                           [df['Unnamed: 10'][0], current_month_obudget_ms]
+                           ]
+
+        fig, ax = plt.subplots(1, 1)
+        ax.axis('off')
+        ax.axis('tight')
+        plt.title("Current Mobile Shower Budget")
+        ax.table(ms_current_data, loc='center')
+        canvas5 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
+        canvas5.draw()
+        canvas5.get_tk_widget().place(relx=.77, rely=.2, anchor=CENTER)
+
+        # Create YTD Mobile Shower Table
+        ms_ytd_data = [[df['Unnamed: 12'][0], current_year_budget_ms],
+                       [df['Unnamed: 14'][0], current_ytd_budget_ms],
+                       [df['Unnamed: 16'][0], current_ytd_obudget_ms],
+                       [df['Unnamed: 18'][0], current_ytd_abudget_ms]]
+
+        fig, ax = plt.subplots(1, 1)
+        ax.axis('off')
+        ax.axis('tight')
+        plt.title("YTD Mobile Shower Budget")
+        ax.table(ms_ytd_data, loc='center')
+        canvas6 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
+        canvas6.draw()
+        canvas6.get_tk_widget().place(relx=.77, rely=.6, anchor=CENTER)
+
+        revenues_expsenses_budget_window.withdraw()
+
+        btn_main = Button(reb_exp_analyze_window, text="Back to Main", command=lambda: [reb_exp_analyze_window.withdraw(), main_window.deiconify()],
+                          width=20, height=3, fg='green')
+        btn_main.place(x=900, y=550)
+
+        reb_exp_analyze_window.mainloop()
+
+    btn_reb_analyze = Button(revenues_expsenses_budget_window, text="Analyze File", command=analyze_revenue_expneses_budget,
+                             width=20, height=3, fg='green')
+    btn_reb_analyze.place(x=700, y=550)
+
     revenues_expsenses_budget_window.mainloop()
 
 
@@ -675,13 +914,14 @@ btn_Revenue_Expenses_Budget.place(x=50, y=600)
 def create_Revenue_Expenses_Program_frame():
 
     revenues_expsenses_program_window = Tk()
-    revenues_expsenses_program_window .geometry('1600x1200')
+    revenues_expsenses_program_window .geometry('1600x1600')
 
     # Hides 'Main Screen' GUI
     main_window.withdraw()
 
     # Sets title of 'Revenue and Expenses by Program' GUI
-    revenues_expsenses_program_window.title('AR Summary File Upload')
+    revenues_expsenses_program_window.title(
+        'Revenue and Expenses by Program Summary File Upload')
 
     # Creates textbox for 'Revenue and Expenses by Program' GUI and sets location on GUI
     re_P_txt_file = Text(revenues_expsenses_program_window, height=4,
@@ -699,12 +939,14 @@ def create_Revenue_Expenses_Program_frame():
                                                                                                    re_P_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
 
+    # fucntion to anayle 'Revenue and Expenses' Excel
     def analyze_revenue_expenses_program():
         df = pd.read_excel(
             filepath, sheet_name=1)
 
         revenues_expsenses_program_window.withdraw()
 
+        # Capture of data points for Excel file
         total_income_food_sack = (df['Food Sack'][38])
         total_income_mobile_shower = (df['Mobile Shower Program'][38])
         total_income_now = (df['NOW'][38])
@@ -718,13 +960,12 @@ def create_Revenue_Expenses_Program_frame():
         net_income_now = (df['NOW'][167])
 
         rep_analyze_window = Tk()
-        rep_analyze_window.geometry('1900x1200')
-        rep_analyze_window.title("Test")
-        rep_analyze_window.state('zoomed')
+        rep_analyze_window.geometry('1600x1600')
+        rep_analyze_window.title("Revenue and Expenses by Program Summary")
 
         sns.set_theme(font_scale=1.5)
-        # for 'Total Income' Bar Graph
 
+        # Creates 'Total Income' Bar Graph
         def create_total_income_bar():
 
             sns.set_palette(['orange', 'purple', 'grey'])
@@ -745,6 +986,7 @@ def create_Revenue_Expenses_Program_frame():
 
         canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
 
+        # Creates total expenses bar graph
         def create_total_expenses_bar():
             sns.set_palette(['red', 'green', 'teal'])
             te_axs = sns.catplot(x=['Food Sack', 'Mobile Shower', 'NOW'], y=[total_expenses_food_sack, total_expenses_mobile_shower, total_expenses_now],
@@ -764,6 +1006,7 @@ def create_Revenue_Expenses_Program_frame():
 
         canvas.get_tk_widget().place(relx=.5, rely=.5, anchor=CENTER)
 
+        # Creates net income bar graph
         def create_net_income_bar():
             sns.set_palette(['teal', 'grey', 'brown'])
             ni_axs = sns.catplot(x=['Food Sack', 'Mobile Shower', 'NOW'], y=[net_income_food_sack, net_income_mobile_shower, net_income_now],
@@ -781,6 +1024,10 @@ def create_Revenue_Expenses_Program_frame():
         canvas = FigureCanvasTkAgg(te_fig, master=rep_analyze_window)
         canvas.draw()
         canvas.get_tk_widget().place(relx=.83, rely=.5, anchor=CENTER)
+
+        btn_main = Button(rep_analyze_window, text="Back to Main", command=lambda: [rep_analyze_window.withdraw(), main_window.deiconify()],
+                          width=20, height=3, fg='green')
+        btn_main.place(x=900, y=550)
 
         rep_analyze_window.mainloop()
 
