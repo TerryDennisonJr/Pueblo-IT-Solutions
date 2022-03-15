@@ -20,11 +20,12 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tempfile
 import subprocess
 import tempfile
+import pyautogui
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates main window of program
 main_window = Tk()
-main_window.geometry('1600x1600')
+main_window.attributes('-fullscreen', True)
 main_window.title("Pueblo Cooperative Care")
 
 
@@ -147,18 +148,24 @@ def create_AP_Summary_frame():
         btn_print.place(x=100, y=550)
 
         # WIP Button for saving file as 'PDF' and button position
-        btn_pdf = Button(ap_analyze_window, text="Save as PDF", command=lambda: [ap_summary_window.destroy(), main_window.deiconify()],
-                         width=20, height=3, fg='green')
-        btn_pdf.place(x=500, y=550)
-
+        
         btn_main = Button(ap_analyze_window, text="Back to Main", command=lambda: [ap_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
         btn_main.place(x=900, y=550)
+        def save_data():
 
+            screenshottaker = pyautogui.screenshot()
+            save_path = filedialog.asksaveasfilename()
+            screenshottaker.save(save_path+"_screenshot.png")
+            
         # Display's 'AP Analyze' GUI frame
+        btn_pdf = Button(ap_analyze_window, text="Save as PDF", command=lambda:[ save_data()],
+                                width=20, height=3, fg='green')
+        btn_pdf.place(x=500, y=550)
 
+       
         ap_analyze_window.mainloop()
-
+       
     # Button event handler for calling 'analyze_ap_summary' function and button position
     btn_analyze = Button(ap_summary_window, text="Analyze File", command=anaylze_AP_summary,
                          width=20, height=3, fg='green')
@@ -314,7 +321,7 @@ def create_assets_liabilities_Summary_frame():
     # Creates GUI object and sets size of GUI
     al_summary_window = Tk()
     al_summary_window.geometry('1600x1600')
-    
+
     # Hides 'Main Screen' GUI
     main_window.withdraw()
 
