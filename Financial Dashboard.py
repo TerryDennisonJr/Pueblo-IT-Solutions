@@ -17,10 +17,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import tempfile
-import subprocess
-import tempfile
 import pyautogui
+
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates main window of program
@@ -152,13 +150,20 @@ def create_AP_Summary_frame():
         btn_main = Button(ap_analyze_window, text="Back to Main", command=lambda: [ap_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
         btn_main.place(x=900, y=550)
+        
+        #method to capture GUI image, saves as png, and converts to pdf
         def save_data():
 
-            screenshottaker = pyautogui.screenshot()
+            screenshottaker = pyautogui.screenshot() 
             save_path = filedialog.asksaveasfilename()
-            screenshottaker.save(save_path+"_screenshot.png")
+            screenshottaker.save(save_path+".png")
             
-        # Display's 'AP Analyze' GUI frame
+            saved_image = Image.open(save_path+".png")
+            im_1 = saved_image.convert('RGB')
+            im_1.save(save_path+".pdf")
+            os.remove(save_path+".png")
+            
+        # Saves 'Analyze' GUI frame
         btn_pdf = Button(ap_analyze_window, text="Save as PDF", command=lambda:[ save_data()],
                                 width=20, height=3, fg='green')
         btn_pdf.place(x=500, y=550)
@@ -288,15 +293,28 @@ def create_AR_Summary_frame():
         btn_print.place(x=100, y=550)
 
         # WIP Button for saving file as 'PDF' and button position
-        btn_pdf = Button(ar_analyze_window, text="Save as PDF", command=lambda: [ar_analyze_window.withdraw(), main_window.deiconify()],
+        btn_pdf = Button(ar_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
         btn_pdf.place(x=500, y=550)
 
         btn_main = Button(ar_analyze_window, text="Back to Main", command=lambda: [ar_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
         btn_main.place(x=900, y=550)
+        
+        #method to capture GUI image, saves as png, and converts to pdf
+        def save_data():
 
-        # Display's 'AR Analyze' GUI frame
+            screenshottaker = pyautogui.screenshot() 
+            save_path = filedialog.asksaveasfilename()
+            screenshottaker.save(save_path+".png")
+            
+            saved_image = Image.open(save_path+".png")
+            im_1 = saved_image.convert('RGB')
+            im_1.save(save_path+".pdf")
+            os.remove(save_path+".png")
+            
+     
+        # Display's ' Analyze' GUI frame
         ar_analyze_window.mainloop()
 
     # Button event handler for calling 'analyze_AR_summary' function and button position
@@ -446,9 +464,22 @@ def create_assets_liabilities_Summary_frame():
                            width=20, height=3, fg='green')
 
         btn_print.place(x=100, y=550)
+        
+        #method to capture GUI image, saves as png, and converts to pdf
+        def save_data():
+
+            screenshottaker = pyautogui.screenshot() 
+            save_path = filedialog.asksaveasfilename()
+            screenshottaker.save(save_path+".png")
+            
+            saved_image = Image.open(save_path+".png")
+            im_1 = saved_image.convert('RGB')
+            im_1.save(save_path+".pdf")
+            os.remove(save_path+".png")
+            
 
         # WIP Button for saving file as 'PDF' and button position
-        btn_pdf = Button(al_analyze_window, text="Save as PDF", command=lambda: [al_summary_window.destroy(), main_window.deiconify()],
+        btn_pdf = Button(al_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
         btn_pdf.place(x=500, y=550)
 
@@ -576,6 +607,24 @@ def create_Revenue_Expenses_frame():
         btn_main = Button(rev_exp_analyze_window, text="Back to Main", command=lambda: [rev_exp_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
         btn_main.place(x=900, y=550)
+        
+        #method to capture GUI image, saves as png, and converts to pdf
+        def save_data():
+
+            screenshottaker = pyautogui.screenshot() 
+            save_path = filedialog.asksaveasfilename()
+            screenshottaker.save(save_path+".png")
+            
+            saved_image = Image.open(save_path+".png")
+            im_1 = saved_image.convert('RGB')
+            im_1.save(save_path+".pdf")
+            os.remove(save_path+".png")
+            
+
+        # WIP Button for saving file as 'PDF' and button position
+        btn_pdf = Button(rev_exp_analyze_window, text="Save as PDF", command=lambda: [save_data()],
+                         width=20, height=3, fg='green')
+        btn_pdf.place(x=500, y=550)
 
         rev_exp_analyze_window.mainloop()
 
@@ -715,6 +764,24 @@ def create_Revenue_Expenses_Comparison_frame():
         btn_main = Button(repy_analyze_window, text="Back to Main", command=lambda: [repy_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
         btn_main.place(x=900, y=550)
+        
+        #method to capture GUI image, saves as png, and converts to pdf
+        def save_data():
+
+            screenshottaker = pyautogui.screenshot() 
+            save_path = filedialog.asksaveasfilename()
+            screenshottaker.save(save_path+".png")
+            
+            saved_image = Image.open(save_path+".png")
+            im_1 = saved_image.convert('RGB')
+            im_1.save(save_path+".pdf")
+            os.remove(save_path+".png")
+            
+
+        # WIP Button for saving file as 'PDF' and button position
+        btn_pdf = Button(repy_analyze_window, text="Save as PDF", command=lambda: [save_data()],
+                         width=20, height=3, fg='green')
+        btn_pdf.place(x=500, y=550)
 
         repy_analyze_window.mainloop()
 
@@ -899,6 +966,24 @@ def create_Revenue_Expenses_Budget_frame():
         btn_main = Button(reb_exp_analyze_window, text="Back to Main", command=lambda: [reb_exp_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
         btn_main.place(x=900, y=550)
+        
+        #method to capture GUI image, saves as png, and converts to pdf
+        def save_data():
+
+            screenshottaker = pyautogui.screenshot() 
+            save_path = filedialog.asksaveasfilename()
+            screenshottaker.save(save_path+".png")
+            
+            saved_image = Image.open(save_path+".png")
+            im_1 = saved_image.convert('RGB')
+            im_1.save(save_path+".pdf")
+            os.remove(save_path+".png")
+            
+
+        # WIP Button for saving file as 'PDF' and button position
+        btn_pdf = Button(reb_exp_analyze_window, text="Save as PDF", command=lambda: [save_data()],
+                         width=20, height=3, fg='green')
+        btn_pdf.place(x=500, y=550)
 
         reb_exp_analyze_window.mainloop()
 
@@ -1035,6 +1120,24 @@ def create_Revenue_Expenses_Program_frame():
         btn_main = Button(rep_analyze_window, text="Back to Main", command=lambda: [rep_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
         btn_main.place(x=900, y=550)
+        
+        #method to capture GUI image, saves as png, and converts to pdf
+        def save_data():
+
+            screenshottaker = pyautogui.screenshot() 
+            save_path = filedialog.asksaveasfilename()
+            screenshottaker.save(save_path+".png")
+            
+            saved_image = Image.open(save_path+".png")
+            im_1 = saved_image.convert('RGB')
+            im_1.save(save_path+".pdf")
+            os.remove(save_path+".png")
+            
+
+        # WIP Button for saving file as 'PDF' and button position
+        btn_pdf = Button(rep_analyze_window, text="Save as PDF", command=lambda: [save_data()],
+                         width=20, height=3, fg='green')
+        btn_pdf.place(x=500, y=550)
 
         rep_analyze_window.mainloop()
 
