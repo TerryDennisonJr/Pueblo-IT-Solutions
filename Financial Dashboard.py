@@ -152,7 +152,7 @@ def create_AP_Summary_frame():
         btn_main.place(x=1500, y=200)
 
         btn2_exit = Button(ap_analyze_window, text="Exit",
-                  command= lambda : [ap_analyze_window.destroy(),main_window.destroy(),ap_summary_window.destroy()], width=40, height=3, fg='green')
+                  command= lambda : [ap_analyze_window.destroy(),main_window.destroy(),ap_summary_window.destroy()], width=20, height=3, fg='green')
         btn2_exit.place(x=1500, y=400)
         
         #method to capture GUI image, saves as png, and converts to pdf
@@ -307,7 +307,7 @@ def create_AR_Summary_frame():
         btn_main.place(x=1500, y=300)
 
         btn_exit = Button(ar_analyze_window, text="Exit",
-                  command= lambda : [ar_analyze_window.destroy(),main_window.destroy(),ar_summary_window.destroy()], width=40, height=3, fg='green')
+                  command= lambda : [ar_analyze_window.destroy(),main_window.destroy(),ar_summary_window.destroy()], width=20, height=3, fg='green')
         btn_exit.place(x=1500, y=400)
         
         #method to capture GUI image, saves as png, and converts to pdf
