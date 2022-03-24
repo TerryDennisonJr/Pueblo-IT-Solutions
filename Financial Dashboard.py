@@ -6,6 +6,7 @@ Created on Wed Feb  9 16:36:45 2022
 @author: terrydennison
 """
 
+
 from tkinter import *
 import tkinter
 from PIL import ImageTk, Image
@@ -150,7 +151,7 @@ def create_AP_Summary_frame():
 
         # WIP Button for saving file as 'PDF' and button position
 
-        btn_main = Button(ap_analyze_window, text="Back to Main", command=lambda: [ap_analyze_window.withdraw(), main_window.deiconify()],
+        btn_main = Button(ap_analyze_window, text="Back to Main", command=lambda: [ap_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
                           width=20, height=3, fg='green')
         btn_main.place(x=1300, y=300)
 
@@ -300,7 +301,7 @@ def create_AR_Summary_frame():
                          width=20, height=3, fg='green')
         btn_pdf.place(x=1300, y=200)
 
-        btn_main = Button(ar_analyze_window, text="Back to Main", command=lambda: [ar_analyze_window.withdraw(), main_window.deiconify()],
+        btn_main = Button(ar_analyze_window, text="Back to Main", command=lambda: [ar_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
                           width=20, height=3, fg='green')
         btn_main.place(x=1300, y=300)
 
@@ -489,7 +490,7 @@ def create_assets_liabilities_Summary_frame():
                          width=20, height=3, fg='green')
         btn_pdf.place(x=1300, y=200)
 
-        btn_main = Button(al_analyze_window, text="Back to Main", command=lambda: [al_analyze_window.withdraw(), main_window.deiconify()],
+        btn_main = Button(al_analyze_window, text="Back to Main", command=lambda: [al_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
                           width=20, height=3, fg='green')
         btn_main.place(x=1300, y=300)
 
@@ -615,7 +616,7 @@ def create_Revenue_Expenses_frame():
 
         canvas2.get_tk_widget().place(relx=.4, rely=.02, )
 
-        btn_main = Button(rev_exp_analyze_window, text="Back to Main", command=lambda: [rev_exp_analyze_window.withdraw(), main_window.deiconify()],
+        btn_main = Button(rev_exp_analyze_window, text="Back to Main", command=lambda: [rev_exp_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
                           width=20, height=3, fg='green')
         btn_main.place(x=1300, y=300)
 
@@ -775,7 +776,7 @@ def create_Revenue_Expenses_Comparison_frame():
         canvas.draw()
         canvas.get_tk_widget().place(relx=.01, rely=.5,)
 
-        btn_main = Button(repy_analyze_window, text="Back to Main", command=lambda: [repy_analyze_window.withdraw(), main_window.deiconify()],
+        btn_main = Button(repy_analyze_window, text="Back to Main", command=lambda: [repy_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
                           width=20, height=3, fg='green')
         btn_main.place(x=1300, y=300)
 
@@ -980,7 +981,7 @@ def create_Revenue_Expenses_Budget_frame():
 
         revenues_expsenses_budget_window.withdraw()
 
-        btn_main = Button(reb_exp_analyze_window, text="Back to Main", command=lambda: [reb_exp_analyze_window.withdraw(), main_window.deiconify()],
+        btn_main = Button(reb_exp_analyze_window, text="Back to Main", command=lambda: [reb_exp_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
                           width=20, height=3, fg='green')
         btn_main.place(x=700, y=800)
 
@@ -1137,7 +1138,7 @@ def create_Revenue_Expenses_Program_frame():
         canvas.draw()
         canvas.get_tk_widget().place(relx=.01, rely=.5,)
 
-        btn_main = Button(rep_analyze_window, text="Back to Main", command=lambda: [rep_analyze_window.withdraw(), main_window.deiconify()],
+        btn_main = Button(rep_analyze_window, text="Back to Main", command=lambda: [rep_analyze_window.withdraw(), main_window.deiconify(),plt.close('all')],
                           width=20, height=3, fg='green')
         btn_main.place(x=1300, y=300)
 
