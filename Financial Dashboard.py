@@ -79,17 +79,21 @@ def create_AP_Summary_frame():
 
         df['Unnamed: 0'] = np.nan
         df.dropna(how='all', axis=1, inplace=True)
-
+        
+       
         df = pd.melt(df, id_vars='Unnamed: 1',
                      var_name='Date Ranges', value_name='Amount')
-
+        
+        
         # Nested function for creating figure for 'grouped bar chart'
         def create_plot():
             axs = sns.catplot(x='Date Ranges', y='Amount',
                               hue='Unnamed: 1', data=df, kind='bar')
             axs.fig.suptitle('AP Summary')
             axs.fig.set_size_inches(8.5, 8)
+            
             return axs.fig
+        
         # Creates window for graphical display of data and size of GUI frame
         ap_analyze_window = Tk()
         ap_analyze_window.geometry('1600x1600')
@@ -100,9 +104,9 @@ def create_AP_Summary_frame():
         canvas = FigureCanvasTkAgg(figure, master=ap_analyze_window)
         canvas.draw()
         # Sets position of created 'Canvas'
-        
+
         canvas.get_tk_widget().place(relx=0.01, rely=.1, )
-       
+
         fig = plt.figure(figsize=(6, 8))
         fig.set_size_inches(9, 8)
         plt.axis('equal')
@@ -120,7 +124,6 @@ def create_AP_Summary_frame():
         canvas = FigureCanvasTkAgg(fig, master=ap_analyze_window)
         canvas.draw()
         canvas.get_tk_widget().place(relx=.4, rely=.1,)
-        
 
         # Hides 'AP Summary GUI'
         ap_summary_window.withdraw()
@@ -143,38 +146,37 @@ def create_AP_Summary_frame():
         btn_print = Button(ap_analyze_window, text="Print as PDF", command=pdf_Print(),
                            width=20, height=3, fg='green')
 
-        btn_print.place(x=1500, y=100)
+        btn_print.place(x=1300, y=100)
 
         # WIP Button for saving file as 'PDF' and button position
-        
+
         btn_main = Button(ap_analyze_window, text="Back to Main", command=lambda: [ap_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
-        btn_main.place(x=1500, y=200)
+        btn_main.place(x=1300, y=300)
 
         btn2_exit = Button(ap_analyze_window, text="Exit",
-                  command= lambda : [ap_analyze_window.destroy(),main_window.destroy(),ap_summary_window.destroy()], width=20, height=3, fg='green')
-        btn2_exit.place(x=1500, y=400)
-        
-        #method to capture GUI image, saves as png, and converts to pdf
+                           command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+        btn2_exit.place(x=1300, y=400)
+
+        # method to capture GUI image, saves as png, and converts to pdf
         def save_data():
 
-            screenshottaker = pyautogui.screenshot() 
+            screenshottaker = pyautogui.screenshot()
             save_path = filedialog.asksaveasfilename()
             screenshottaker.save(save_path+".png")
-            
+
             saved_image = Image.open(save_path+".png")
             im_1 = saved_image.convert('RGB')
             im_1.save(save_path+".pdf")
             os.remove(save_path+".png")
-            
-        # Saves 'Analyze' GUI frame
-        btn_pdf = Button(ap_analyze_window, text="Save as PDF", command=lambda:[ save_data()],
-                                width=20, height=3, fg='green')
-        btn_pdf.place(x=1500, y=300)
 
-       
+        # Saves 'Analyze' GUI frame
+        btn_pdf = Button(ap_analyze_window, text="Save as PDF", command=lambda: [save_data()],
+                         width=20, height=3, fg='green')
+        btn_pdf.place(x=1300, y=200)
+
         ap_analyze_window.mainloop()
-       
+
     # Button event handler for calling 'analyze_ap_summary' function and button position
     btn_analyze = Button(ap_summary_window, text="Analyze File", command=anaylze_AP_summary,
                          width=20, height=3, fg='green')
@@ -237,7 +239,7 @@ def create_AR_Summary_frame():
             axs = sns.catplot(x='Date Ranges', y='Amount',
                               hue='Unnamed: 1', data=df, kind='bar')
             axs.fig.suptitle('AR Summary')
-            axs.fig.set_size_inches(9, 8)
+            axs.fig.set_size_inches(7.5, 9)
             return axs.fig
         # Creates window for grARhical display of data and size of GUI frame
         ar_analyze_window = Tk()
@@ -250,11 +252,9 @@ def create_AR_Summary_frame():
         canvas.draw()
 
         # Sets position of created 'Canvas'
-       
-        canvas.get_tk_widget().place(relx=0.01, rely=.1,)
-        fig = plt.figure(figsize=(8, 8))
-        fig.set_size_inches(9.5, 8)
 
+        canvas.get_tk_widget().place(relx=0.01, rely=.1,)
+        fig = plt.figure(figsize=(9.9, 9))
         plt.axis('equal')
 
         pie_labels = (df['Unnamed: 1'][20:23])
@@ -266,14 +266,12 @@ def create_AR_Summary_frame():
 
         # Cretes pie graph
         pie_graph = plt.pie(pie_data, labels=pie_labels, colors=colors,
-                            autopct='%.0f%%', pctdistance=.5, explode=[0.1]*3, textprops={"fontsize": 11.3}, shadow=True)
+                            autopct='%.0f%%', pctdistance=.4, explode=[0.04]*3, textprops={"fontsize": 10.2}, shadow=True)
         plt.legend()
 
         canvas = FigureCanvasTkAgg(fig, master=ar_analyze_window)
         canvas.draw()
-
-        canvas.get_tk_widget().place(relx=.4, rely=.1)
-        
+        canvas.get_tk_widget().place(relx=.36, rely=.1)
 
         # Hides 'AR Summary GUI'
         ar_summary_window.withdraw()
@@ -295,34 +293,33 @@ def create_AR_Summary_frame():
         btn_print = Button(ar_analyze_window, text="Print as PDF", command=pdf_Print(),
                            width=20, height=3, fg='green')
 
-        btn_print.place(x=1500, y=100)
+        btn_print.place(x=1300, y=100)
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(ar_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
-        btn_pdf.place(x=1500, y=200)
+        btn_pdf.place(x=1300, y=200)
 
         btn_main = Button(ar_analyze_window, text="Back to Main", command=lambda: [ar_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
-        btn_main.place(x=1500, y=300)
+        btn_main.place(x=1300, y=300)
 
-        btn_exit = Button(ar_analyze_window, text="Exit",
-                  command= lambda : [ar_analyze_window.destroy(),main_window.destroy(),ar_summary_window.destroy()], width=20, height=3, fg='green')
-        btn_exit.place(x=1500, y=400)
-        
-        #method to capture GUI image, saves as png, and converts to pdf
+        btn2_exit = Button(ar_analyze_window, text="Exit",
+                           command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+        btn2_exit.place(x=1300, y=400)
+
+        # method to capture GUI image, saves as png, and converts to pdf
         def save_data():
 
-            screenshottaker = pyautogui.screenshot() 
+            screenshottaker = pyautogui.screenshot()
             save_path = filedialog.asksaveasfilename()
             screenshottaker.save(save_path+".png")
-            
+
             saved_image = Image.open(save_path+".png")
             im_1 = saved_image.convert('RGB')
             im_1.save(save_path+".pdf")
             os.remove(save_path+".png")
-            
-     
+
         # Display's ' Analyze' GUI frame
         ar_analyze_window.mainloop()
 
@@ -408,14 +405,14 @@ def create_assets_liabilities_Summary_frame():
 
             ax = ta_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            ta_axs.fig.set_size_inches(8, 8)
+            ta_axs.fig.set_size_inches(8, 7.5)
             return ta_axs.fig
 
         ta_fig = create_total_assets_bar()
         canvas = FigureCanvasTkAgg(ta_fig, master=al_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.01, rely=.02)
 
         # creates total liabilities bar graph
         def create_total_liabilities_bar():
@@ -428,14 +425,15 @@ def create_assets_liabilities_Summary_frame():
 
             ax = tl_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            tl_axs.fig.set_size_inches(8, 8)
+            tl_axs.fig.set_size_inches(8, 7.5)
             return tl_axs.fig
 
         tl_fig = create_total_liabilities_bar()
         canvas = FigureCanvasTkAgg(tl_fig, master=al_analyze_window)
+
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=0.01, rely=.1,)
+        canvas.get_tk_widget().place(relx=0.4, rely=.02,)
 
         # create total equity bar graph
         def create_total_equity_bar():
@@ -448,13 +446,13 @@ def create_assets_liabilities_Summary_frame():
 
             ax = te_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            te_axs.fig.set_size_inches(8.5, 7)
+            te_axs.fig.set_size_inches(8, 6.8)
             return te_axs.fig
 
         te_fig = create_total_equity_bar()
         canvas = FigureCanvasTkAgg(te_fig, master=al_analyze_window)
         canvas.draw()
-        canvas.get_tk_widget().place(relx=.4, rely=.1)
+        canvas.get_tk_widget().place(relx=.01, rely=.53)
 
         def pdf_Print():
             f = 5
@@ -469,36 +467,35 @@ def create_assets_liabilities_Summary_frame():
           # subprocess.call(["impg", "-window", "td", postscript_file])
 
         # WIP Button for Printing 'Canvas' and button position
-        btn_print = Button(al_analyze_window, text="Print as PDF", command=pdf_Print(),
-                           width=20, height=3, fg='green')
+        # btn_print = Button(al_analyze_window, text="Print as PDF", command=pdf_Print(),
+        #                    width=20, height=3, fg='green')
 
-        btn_print.place(x=100, y=700)
-        
-        #method to capture GUI image, saves as png, and converts to pdf
+        # btn_print.place(x=100, y=700)
+
+        # method to capture GUI image, saves as png, and converts to pdf
         def save_data():
 
-            screenshottaker = pyautogui.screenshot() 
+            screenshottaker = pyautogui.screenshot()
             save_path = filedialog.asksaveasfilename()
             screenshottaker.save(save_path+".png")
-            
+
             saved_image = Image.open(save_path+".png")
             im_1 = saved_image.convert('RGB')
             im_1.save(save_path+".pdf")
             os.remove(save_path+".png")
-            
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(al_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
-        btn_pdf.place(x=1500, y=100)
+        btn_pdf.place(x=1300, y=200)
 
         btn_main = Button(al_analyze_window, text="Back to Main", command=lambda: [al_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
-        btn_main.place(x=1500, y=200)
+        btn_main.place(x=1300, y=300)
 
         btn_exit = Button(al_analyze_window, text="Exit",
-                  command= lambda : [al_analyze_window.destroy(),main_window.destroy(),al_summary_window.destroy()], width=20, height=3, fg='green')
-        btn_exit.place(x=1500, y=400)
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+        btn_exit.place(x=1300, y=400)
 
         al_summary_window.withdraw()
         al_analyze_window.mainloop()
@@ -585,7 +582,7 @@ def create_Revenue_Expenses_frame():
             axs = sns.catplot(x=0, y=1,
                               data=df2, kind='bar')
             axs.fig.suptitle('Current Program Expenses')
-            axs.fig.set_size_inches(8.5, 7)
+            axs.fig.set_size_inches(8.5, 8)
             plt.ylabel('Amount ($)')
             plt.xlabel('Programs')
             return axs.fig
@@ -596,7 +593,7 @@ def create_Revenue_Expenses_frame():
             axs2 = sns.catplot(x=0, y=2,
                                data=df2, kind='bar')
             axs2.fig.suptitle('Previous Year Program Expenses')
-            axs2.fig.set_size_inches(8.5, 7)
+            axs2.fig.set_size_inches(8.5, 8)
             plt.ylabel('Amount ($)')
             plt.xlabel('Programs')
             return axs2.fig
@@ -614,31 +611,34 @@ def create_Revenue_Expenses_frame():
         canvas.draw()
         canvas2.draw()
 
-        canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.01, rely=.02, )
 
-        canvas2.get_tk_widget().place(relx=.50, rely=.5, anchor=CENTER)
+        canvas2.get_tk_widget().place(relx=.4, rely=.02, )
 
         btn_main = Button(rev_exp_analyze_window, text="Back to Main", command=lambda: [rev_exp_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
-        btn_main.place(x=900, y=700)
-        
-        #method to capture GUI image, saves as png, and converts to pdf
+        btn_main.place(x=1300, y=300)
+
+        # method to capture GUI image, saves as png, and converts to pdf
         def save_data():
 
-            screenshottaker = pyautogui.screenshot() 
+            screenshottaker = pyautogui.screenshot()
             save_path = filedialog.asksaveasfilename()
             screenshottaker.save(save_path+".png")
-            
+
             saved_image = Image.open(save_path+".png")
             im_1 = saved_image.convert('RGB')
             im_1.save(save_path+".pdf")
             os.remove(save_path+".png")
-            
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(rev_exp_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
-        btn_pdf.place(x=500, y=700)
+        btn_pdf.place(x=1300, y=200)
+
+        btn_exit = Button(rev_exp_analyze_window, text="Exit",
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+        btn_exit.place(x=1300, y=400)
 
         rev_exp_analyze_window.mainloop()
 
@@ -734,7 +734,7 @@ def create_Revenue_Expenses_Comparison_frame():
         canvas = FigureCanvasTkAgg(fs_fig, master=repy_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.01, rely=.01, )
 
         # Creates NOW bar graph
         def create_now_bar():
@@ -754,7 +754,7 @@ def create_Revenue_Expenses_Comparison_frame():
         canvas = FigureCanvasTkAgg(now_fig, master=repy_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.5, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.4, rely=.01, )
 
         # Creates 'Mobile Shower' Bar graph
         def create_mobile_shower_bar():
@@ -773,29 +773,32 @@ def create_Revenue_Expenses_Comparison_frame():
         ms_fig = create_mobile_shower_bar()
         canvas = FigureCanvasTkAgg(ms_fig, master=repy_analyze_window)
         canvas.draw()
-        canvas.get_tk_widget().place(relx=.83, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.01, rely=.5,)
 
         btn_main = Button(repy_analyze_window, text="Back to Main", command=lambda: [repy_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
-        btn_main.place(x=900, y=700)
-        
-        #method to capture GUI image, saves as png, and converts to pdf
+        btn_main.place(x=1300, y=300)
+
+        btn_exit = Button(repy_analyze_window, text="Exit",
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+        btn_exit.place(x=1300, y=400)
+
+        # method to capture GUI image, saves as png, and converts to pdf
         def save_data():
 
-            screenshottaker = pyautogui.screenshot() 
+            screenshottaker = pyautogui.screenshot()
             save_path = filedialog.asksaveasfilename()
             screenshottaker.save(save_path+".png")
-            
+
             saved_image = Image.open(save_path+".png")
             im_1 = saved_image.convert('RGB')
             im_1.save(save_path+".pdf")
             os.remove(save_path+".png")
-            
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(repy_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
-        btn_pdf.place(x=500, y=700)
+        btn_pdf.place(x=1300, y=200)
 
         repy_analyze_window.mainloop()
 
@@ -970,7 +973,7 @@ def create_Revenue_Expenses_Budget_frame():
         ax.axis('off')
         ax.axis('tight')
         plt.title("YTD Mobile Shower Budget")
-        ax.table(ms_ytd_data, loc='center')
+        ax.table(ms_ytd_data, loc='center', )
         canvas6 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas6.draw()
         canvas6.get_tk_widget().place(relx=.77, rely=.6, anchor=CENTER)
@@ -979,25 +982,28 @@ def create_Revenue_Expenses_Budget_frame():
 
         btn_main = Button(reb_exp_analyze_window, text="Back to Main", command=lambda: [reb_exp_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
-        btn_main.place(x=900, y=700)
-        
-        #method to capture GUI image, saves as png, and converts to pdf
+        btn_main.place(x=700, y=800)
+
+        # method to capture GUI image, saves as png, and converts to pdf
         def save_data():
 
-            screenshottaker = pyautogui.screenshot() 
+            screenshottaker = pyautogui.screenshot()
             save_path = filedialog.asksaveasfilename()
             screenshottaker.save(save_path+".png")
-            
+
             saved_image = Image.open(save_path+".png")
             im_1 = saved_image.convert('RGB')
             im_1.save(save_path+".pdf")
             os.remove(save_path+".png")
-            
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(reb_exp_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
-        btn_pdf.place(x=500, y=700)
+        btn_pdf.place(x=300, y=800)
+
+        btn_exit = Button(reb_exp_analyze_window, text="Exit",
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+        btn_exit.place(x=1100, y=800)
 
         reb_exp_analyze_window.mainloop()
 
@@ -1090,7 +1096,7 @@ def create_Revenue_Expenses_Program_frame():
         canvas = FigureCanvasTkAgg(ta_fig, master=rep_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.17, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.01, rely=.01,)
 
         # Creates total expenses bar graph
         def create_total_expenses_bar():
@@ -1110,7 +1116,7 @@ def create_Revenue_Expenses_Program_frame():
         canvas = FigureCanvasTkAgg(tl_fig, master=rep_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.5, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.4, rely=.01,)
 
         # Creates net income bar graph
         def create_net_income_bar():
@@ -1129,29 +1135,32 @@ def create_Revenue_Expenses_Program_frame():
         te_fig = create_net_income_bar()
         canvas = FigureCanvasTkAgg(te_fig, master=rep_analyze_window)
         canvas.draw()
-        canvas.get_tk_widget().place(relx=.83, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.01, rely=.5,)
 
         btn_main = Button(rep_analyze_window, text="Back to Main", command=lambda: [rep_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
-        btn_main.place(x=900, y=700)
-        
-        #method to capture GUI image, saves as png, and converts to pdf
+        btn_main.place(x=1300, y=300)
+
+        # method to capture GUI image, saves as png, and converts to pdf
         def save_data():
 
-            screenshottaker = pyautogui.screenshot() 
+            screenshottaker = pyautogui.screenshot()
             save_path = filedialog.asksaveasfilename()
             screenshottaker.save(save_path+".png")
-            
+
             saved_image = Image.open(save_path+".png")
             im_1 = saved_image.convert('RGB')
             im_1.save(save_path+".pdf")
             os.remove(save_path+".png")
-            
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(rep_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
-        btn_pdf.place(x=500, y=700)
+        btn_pdf.place(x=1300, y=200)
+
+        btn_exit = Button(rep_analyze_window, text="Exit",
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+        btn_exit.place(x=1300, y=400)
 
         rep_analyze_window.mainloop()
 
@@ -1171,7 +1180,7 @@ btn_Revenue_Expenses_Program.place(x=50, y=700)
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Exit button to close program
 btn_exit = Button(main_window, text="Exit",
-                  command=main_window.destroy, width=40, height=3, fg='green')
+                  command= lambda: [os._exit(0)], width=40, height=3, fg='green')
 btn_exit.place(x=1150, y=900)
 
 # loads Pueblo Cooperative Care image
