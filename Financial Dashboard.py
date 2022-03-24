@@ -408,7 +408,7 @@ def create_assets_liabilities_Summary_frame():
 
             ax = ta_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            ta_axs.fig.set_size_inches(8.5, 7)
+            ta_axs.fig.set_size_inches(8, 8)
             return ta_axs.fig
 
         ta_fig = create_total_assets_bar()
@@ -428,14 +428,14 @@ def create_assets_liabilities_Summary_frame():
 
             ax = tl_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            tl_axs.fig.set_size_inches(8.5, 7)
+            tl_axs.fig.set_size_inches(8, 8)
             return tl_axs.fig
 
         tl_fig = create_total_liabilities_bar()
         canvas = FigureCanvasTkAgg(tl_fig, master=al_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.5, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=0.01, rely=.1,)
 
         # create total equity bar graph
         def create_total_equity_bar():
@@ -454,7 +454,7 @@ def create_assets_liabilities_Summary_frame():
         te_fig = create_total_equity_bar()
         canvas = FigureCanvasTkAgg(te_fig, master=al_analyze_window)
         canvas.draw()
-        canvas.get_tk_widget().place(relx=.83, rely=.5, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.4, rely=.1)
 
         def pdf_Print():
             f = 5
@@ -490,11 +490,16 @@ def create_assets_liabilities_Summary_frame():
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(al_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
-        btn_pdf.place(x=500, y=700)
+        btn_pdf.place(x=1500, y=100)
 
         btn_main = Button(al_analyze_window, text="Back to Main", command=lambda: [al_analyze_window.withdraw(), main_window.deiconify()],
                           width=20, height=3, fg='green')
-        btn_main.place(x=900, y=550)
+        btn_main.place(x=1500, y=200)
+
+        btn_exit = Button(al_analyze_window, text="Exit",
+                  command= lambda : [al_analyze_window.destroy(),main_window.destroy(),al_summary_window.destroy()], width=20, height=3, fg='green')
+        btn_exit.place(x=1500, y=400)
+
         al_summary_window.withdraw()
         al_analyze_window.mainloop()
 
