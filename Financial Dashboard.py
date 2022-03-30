@@ -1134,7 +1134,7 @@ def create_Revenue_Expenses_Program_frame():
                           width=20, height=3, fg='green')
         btn_main.place(x=1500, y=300)
 
-        # method to capture GUI image, saves as png, and converts to pdf
+        # method to capture GUI image, saves as png, and converts to Pdf
         def save_data():
 
             screenshottaker = pyautogui.screenshot()
