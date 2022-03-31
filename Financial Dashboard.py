@@ -54,14 +54,15 @@ def create_AP_Summary_frame():
 
     # Sets title of 'AP Summary File Upload' GUI
     ap_summary_window.title('AP Summary File Upload')
-    
-    ap_label = Label(ap_summary_window, text = "AP Summary")
-    ap_label.config(font =("Courier", 34))
-    ap_label.place(x=100, y = 100)
-    
-    ap_descr = Label(ap_summary_window, text = "Please select 'AP Summary' file for analyzing")
-    ap_descr.config(font =("Courier", 16))
-    ap_descr.place(x=100, y = 200)
+
+    ap_label = Label(ap_summary_window, text="AP Summary")
+    ap_label.config(font=("Courier", 34))
+    ap_label.place(x=100, y=100)
+
+    ap_descr = Label(ap_summary_window,
+                     text="Please select 'AP Summary' file for analyzing")
+    ap_descr.config(font=("Courier", 16))
+    ap_descr.place(x=100, y=200)
 
     # Creates textbox for 'AP Summary Frame' GUI and sets location on GUI
     txt_file = Text(ap_summary_window, height=4,
@@ -138,7 +139,6 @@ def create_AP_Summary_frame():
 
         def pdf_Print():
             f = 5
-       
 
         # WIP Button for Printing 'Canvas' and button position
         btn_print = Button(ap_analyze_window, text="Print as PDF", command=pdf_Print(),
@@ -173,18 +173,16 @@ def create_AP_Summary_frame():
                          width=20, height=3, fg='green')
         btn_pdf.place(x=1700, y=200)
 
-        
         ap_analyze_window.mainloop()
-   
+
     # Button event handler for calling 'analyze_ap_summary' function and button position
     btn_analyze = Button(ap_summary_window, text="Analyze File", command=anaylze_AP_summary,
                          width=20, height=3, fg='green')
     btn_analyze.place(x=700, y=550)
-    
-    
+
     # Displays 'AP Summary' GUI
     ap_summary_window.mainloop()
-    
+
 
 # Creates Button on main window for 'AP Summary' Option
 btn_AP_Summary = Button(main_window, text="AP Summary", command=create_AP_Summary_frame,
@@ -208,14 +206,15 @@ def create_AR_Summary_frame():
     ar_summary_window.title('AR Summary File Upload')
 
     # Creates textbox for 'AR Summary Frame' GUI and sets location on GUI
-    ar_label = Label(ar_summary_window, text = "AR Summary")
-    ar_label.config(font =("Courier", 34))
-    ar_label.place(x=100, y = 100)
-    
-    ar_descr = Label(ar_summary_window, text = "Please select 'AR Summary' file for analyzing")
-    ar_descr.config(font =("Courier", 16))
-    ar_descr.place(x=100, y = 200)
-    
+    ar_label = Label(ar_summary_window, text="AR Summary")
+    ar_label.config(font=("Courier", 34))
+    ar_label.place(x=100, y=100)
+
+    ar_descr = Label(ar_summary_window,
+                     text="Please select 'AR Summary' file for analyzing")
+    ar_descr.config(font=("Courier", 16))
+    ar_descr.place(x=100, y=200)
+
     ar_txt_file = Text(ar_summary_window, height=4,
                        width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
     ar_txt_file.place(x=100, y=350)
@@ -360,14 +359,15 @@ def create_assets_liabilities_Summary_frame():
 
     # Sets title of Assets Liabilities' File Upload' GUI
     al_summary_window.title('Assets and Liabilites Summary File Upload')
-    
-    al_label = Label(al_summary_window, text = "Assets Liabilities Summary")
-    al_label.config(font =("Courier", 34))
-    al_label.place(x=100, y = 100)
-    
-    al_descr = Label(al_summary_window, text = "Please select 'Stmnt of Assets and Liabilities' file for analyzing")
-    al_descr.config(font =("Courier", 16))
-    al_descr.place(x=100, y = 200)
+
+    al_label = Label(al_summary_window, text="Assets Liabilities Summary")
+    al_label.config(font=("Courier", 34))
+    al_label.place(x=100, y=100)
+
+    al_descr = Label(
+        al_summary_window, text="Please select 'Stmnt of Assets and Liabilities' file for analyzing")
+    al_descr.config(font=("Courier", 16))
+    al_descr.place(x=100, y=200)
 
     # Creates textbox for Assets Liabilities' GUI and sets location on GUI
     al_txt_file = Text(al_summary_window, height=4,
@@ -543,14 +543,16 @@ def create_Revenue_Expenses_frame():
 
     # Sets title of 'Revenue and Expenses' GUI
     revenues_expsenses_window.title('Revenue and Expneses Summary File Upload')
-    
-    re_label = Label(revenues_expsenses_window, text = "Revenue and Expenses Summary")
-    re_label.config(font =("Courier", 34))
-    re_label.place(x=100, y = 100)
-    
-    re_descr = Label(revenues_expsenses_window, text = "Please select 'Stmnt of Revenues and Expenses' file for analyzing")
-    re_descr.config(font =("Courier", 16))
-    re_descr.place(x=100, y = 200)
+
+    re_label = Label(revenues_expsenses_window,
+                     text="Revenue and Expenses Summary")
+    re_label.config(font=("Courier", 34))
+    re_label.place(x=100, y=100)
+
+    re_descr = Label(revenues_expsenses_window,
+                     text="Please select 'Stmnt of Revenues and Expenses' file for analyzing")
+    re_descr.config(font=("Courier", 16))
+    re_descr.place(x=100, y=200)
 
     # Creates textbox for 'Revenue and Expenses' GUI and sets location on GUI
     re_txt_file = Text(revenues_expsenses_window, height=4,
@@ -694,14 +696,16 @@ def create_Revenue_Expenses_Comparison_frame():
     # Sets title of 'Revenue and Expenses Comparison' GUI
     revenues_expsenses_comparison_window.title(
         'Revenue Expneses Comparison Summary File Upload')
-    
-    recy_label = Label(revenues_expsenses_comparison_window, text = "Revenue and Expenses Compared to Previous Year Summary")
-    recy_label.config(font =("Courier", 32))
-    recy_label.place(x=100, y = 100)
-    
-    recy_descr = Label(revenues_expsenses_comparison_window, text = "Please select 'Stmnt of Revenues and Expenses Compared to Prev Year' file for analyzing")
-    recy_descr.config(font =("Courier", 16))
-    recy_descr.place(x=100, y = 200)
+
+    recy_label = Label(revenues_expsenses_comparison_window,
+                       text="Revenue and Expenses Compared to Previous Year Summary")
+    recy_label.config(font=("Courier", 32))
+    recy_label.place(x=100, y=100)
+
+    recy_descr = Label(revenues_expsenses_comparison_window,
+                       text="Please select 'Stmnt of Revenues and Expenses Compared to Prev Year' file for analyzing")
+    recy_descr.config(font=("Courier", 16))
+    recy_descr.place(x=100, y=200)
 
     # Creates textbox for 'Revenue and Expenses Comparison' GUI and sets location on GUI
     re_C_txt_file = Text(revenues_expsenses_comparison_window, height=4,
@@ -865,14 +869,16 @@ def create_Revenue_Expenses_Budget_frame():
     # Sets title of 'Revenue and Expenses Compared to Budget' GUI
     revenues_expsenses_budget_window.title(
         'Revenue and Expenses Compared to Budget Summary File Upload')
-    
-    recb_label = Label(revenues_expsenses_budget_window, text = "Revenue and Expenses Compared to Budget Summary")
-    recb_label.config(font =("Courier", 34))
-    recb_label.place(x=100, y = 100)
-    
-    recb_descr = Label(revenues_expsenses_budget_window, text = "Please select 'Stmnt of Revenues and Expenses Compared to Budget' file for analyzing")
-    recb_descr.config(font =("Courier", 16))
-    recb_descr.place(x=100, y = 200)
+
+    recb_label = Label(revenues_expsenses_budget_window,
+                       text="Revenue and Expenses Compared to Budget Summary")
+    recb_label.config(font=("Courier", 34))
+    recb_label.place(x=100, y=100)
+
+    recb_descr = Label(revenues_expsenses_budget_window,
+                       text="Please select 'Stmnt of Revenues and Expenses Compared to Budget' file for analyzing")
+    recb_descr.config(font=("Courier", 16))
+    recb_descr.place(x=100, y=200)
 
     # Creates textbox for 'Revenue and Expenses Compared to Budget' GUI and sets location on GUI
     re_B_txt_file = Text(revenues_expsenses_budget_window, height=4,
@@ -937,11 +943,11 @@ def create_Revenue_Expenses_Budget_frame():
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("Current Food Shelter Budget", fontsize= 16)
-        
+        plt.title("Current Food Shelter Budget", fontsize=16)
+
         fig.set_size_inches(6, 6)
         cfs_table = ax.table(fs_current_data, loc='center')
-        cfs_table.scale(1,7)
+        cfs_table.scale(1, 7)
         cfs_table.set_fontsize(16)
         canvas = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas.draw()
@@ -956,11 +962,11 @@ def create_Revenue_Expenses_Budget_frame():
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("YTD Food Shelter Budget", fontsize = 16)
-        
+        plt.title("YTD Food Shelter Budget", fontsize=16)
+
         ytd_fs_table = ax.table(fs_ytd_data, loc='center')
         fig.set_size_inches(6, 7)
-        ytd_fs_table.scale(1,4.5)
+        ytd_fs_table.scale(1, 4.5)
         ytd_fs_table.set_fontsize(16)
         canvas2 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas2.draw()
@@ -976,11 +982,11 @@ def create_Revenue_Expenses_Budget_frame():
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("Current NOW Budget", fontsize = 16)
+        plt.title("Current NOW Budget", fontsize=16)
         fig.set_size_inches(6, 6)
         table_data = ax.table(now_current_data, loc='center')
         table_data.set_fontsize(16)
-        table_data.scale(1,7)
+        table_data.scale(1, 7)
         canvas3 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas3.draw()
         canvas3.get_tk_widget().place(relx=.4, rely=.22, anchor=CENTER)
@@ -994,10 +1000,10 @@ def create_Revenue_Expenses_Budget_frame():
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("YTD NOW Budget", fontsize = 16)
+        plt.title("YTD NOW Budget", fontsize=16)
         fig.set_size_inches(6, 7)
         ytd_now_table = ax.table(now_ytd_data, loc='center')
-        ytd_now_table.scale(1,7.5)
+        ytd_now_table.scale(1, 7.5)
         ytd_now_table.set_fontsize(16)
         canvas4 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas4.draw()
@@ -1016,7 +1022,7 @@ def create_Revenue_Expenses_Budget_frame():
         fig.set_size_inches(6, 6)
         cms_table = ax.table(ms_current_data, loc='center')
         cms_table.set_fontsize(16)
-        cms_table.scale(1,7)
+        cms_table.scale(1, 7)
         canvas5 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas5.draw()
         canvas5.get_tk_widget().place(relx=.7, rely=.22, anchor=CENTER)
@@ -1033,7 +1039,7 @@ def create_Revenue_Expenses_Budget_frame():
         plt.title("YTD Mobile Shower Budget", fontsize=16)
         fig.set_size_inches(6, 7)
         ytd_ms_table = ax.table(ms_ytd_data, loc='center', )
-        ytd_ms_table.scale(1,7.5)
+        ytd_ms_table.scale(1, 7.5)
         ytd_ms_table.set_fontsize(16)
         canvas6 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas6.draw()
@@ -1095,14 +1101,16 @@ def create_Revenue_Expenses_Program_frame():
     # Sets title of 'Revenue and Expenses by Program' GUI
     revenues_expsenses_program_window.title(
         'Revenue and Expenses by Program Summary File Upload')
-    
-    rep_label = Label(revenues_expsenses_program_window, text = "Revenue and Expenses by Progam Summary")
-    rep_label.config(font =("Courier", 34))
-    rep_label.place(x=100, y = 100)
-    
-    rep_descr = Label(revenues_expsenses_program_window, text = "Please select 'Stmnt of Revenues and Expenses by Program' file for analyzing")
-    rep_descr.config(font =("Courier", 16))
-    rep_descr.place(x=100, y = 200)
+
+    rep_label = Label(revenues_expsenses_program_window,
+                      text="Revenue and Expenses by Progam Summary")
+    rep_label.config(font=("Courier", 34))
+    rep_label.place(x=100, y=100)
+
+    rep_descr = Label(revenues_expsenses_program_window,
+                      text="Please select 'Stmnt of Revenues and Expenses by Program' file for analyzing")
+    rep_descr.config(font=("Courier", 16))
+    rep_descr.place(x=100, y=200)
 
     # Creates textbox for 'Revenue and Expenses by Program' GUI and sets location on GUI
     re_P_txt_file = Text(revenues_expsenses_program_window, height=4,
@@ -1160,7 +1168,7 @@ def create_Revenue_Expenses_Program_frame():
             ax = ti_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
             ti_axs.fig.set_size_inches(11, 7.5)
-            
+
             return ti_axs.fig
 
         ta_fig = create_total_income_bar()
@@ -1177,13 +1185,13 @@ def create_Revenue_Expenses_Program_frame():
             te_axs.fig.suptitle('Expenses by Program')
             plt.xlabel("Programs")
             plt.ylabel("$ Amount")
-            
+
             plt.axis('tight')
             plt.ylim(0, None)
             ax = te_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
             te_axs.fig.set_size_inches(10, 7)
-            
+
             return te_axs.fig
 
         tl_fig = create_total_expenses_bar()
@@ -1205,7 +1213,7 @@ def create_Revenue_Expenses_Program_frame():
             ax = ni_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
             ni_axs.fig.set_size_inches(11, 7)
-          
+
             return ni_axs.fig
 
         te_fig = create_net_income_bar()
