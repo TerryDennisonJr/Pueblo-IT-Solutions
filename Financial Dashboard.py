@@ -284,26 +284,8 @@ def create_AR_Summary_frame():
         # Hides 'AR Summary GUI'
         ar_summary_window.withdraw()
 
-        # WIP
-        def pdf_Print():
-            f = 5
-          # fp = tempfile.TemporaryFile()
-          # fp.write(ar_analyze_window)
-
-          # ps = canvas..postscript(colormode='color')
-          # img = Image.open(io.BytesIO(ps.encode('utf-8')))
-          # img.save('filename.jpg', 'jpeg')
-
-          # postscript_file = "tmp_snARshot.ps"
-          # subprocess.call(["impg", "-window", "td", postscript_file])
-
-        # WIP Button for Printing 'Canvas' and button position
-        btn_print = Button(ar_analyze_window, text="Print as PDF", command=pdf_Print(),
-                           width=20, height=3, fg='green')
-
-        btn_print.place(x=1700, y=100)
-
-        # WIP Button for saving file as 'PDF' and button position
+        # Button for saving file as 'PDF', "Back to Main" and "Exit"
+        # Set button positions
         btn_pdf = Button(ar_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
         btn_pdf.place(x=1700, y=200)
@@ -346,6 +328,7 @@ btn_AR_Summary = Button(main_window, text="AR Summary", command=create_AR_Summar
 btn_AR_Summary.place(x=50, y=200)
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Assets Liabilites Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 # Creates 'Assets Liabilities' window
 
 
@@ -360,6 +343,7 @@ def create_assets_liabilities_Summary_frame():
     # Sets title of Assets Liabilities' File Upload' GUI
     al_summary_window.title('Assets and Liabilites Summary File Upload')
 
+    # Sets label of GUI
     al_label = Label(al_summary_window, text="Assets Liabilities Summary")
     al_label.config(font=("Courier", 34))
     al_label.place(x=100, y=100)
@@ -386,6 +370,7 @@ def create_assets_liabilities_Summary_frame():
                                                                                    al_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
 
+    # Performs calcuations of data points
     def analyze_AL_summary():
         df = pd.read_excel(
             filepath, sheet_name=1)
@@ -471,25 +456,7 @@ def create_assets_liabilities_Summary_frame():
         canvas.draw()
         canvas.get_tk_widget().place(relx=.01, rely=.53)
 
-        def pdf_Print():
-            f = 5
-          # fp = tempfile.TemporaryFile()
-          # fp.write(ap_analyze_window)
-
-          # ps = canvas..postscript(colormode='color')
-          # img = Image.open(io.BytesIO(ps.encode('utf-8')))
-          # img.save('filename.jpg', 'jpeg')
-
-          # postscript_file = "tmp_snapshot.ps"
-          # subprocess.call(["impg", "-window", "td", postscript_file])
-
-        # WIP Button for Printing 'Canvas' and button position
-        # btn_print = Button(al_analyze_window, text="Print as PDF", command=pdf_Print(),
-        #                    width=20, height=3, fg='green')
-
-        # btn_print.place(x=100, y=700)
-
-        # method to capture GUI image, saves as png, and converts to pdf
+        # Save Functiion
         def save_data():
 
             screenshottaker = pyautogui.screenshot()
@@ -501,7 +468,8 @@ def create_assets_liabilities_Summary_frame():
             im_1.save(save_path+".pdf")
             os.remove(save_path+".png")
 
-        # WIP Button for saving file as 'PDF' and button position
+        # WIP Button for saving file as 'PDF', 'Back to Main', and 'Exit'
+        # Sets button positions
         btn_pdf = Button(al_analyze_window, text="Save as PDF", command=lambda: [save_data()],
                          width=20, height=3, fg='green')
         btn_pdf.place(x=1700, y=200)
@@ -529,10 +497,11 @@ btn_Assets_Liabilities = Button(main_window, text="Statement of Assets-Liabiliti
                                 command=create_assets_liabilities_Summary_frame, width=50, height=3, fg='green')
 btn_Assets_Liabilities.place(x=50, y=300)
 
-
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue Expenses Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 # Creates 'Revenue and Expenses' window
+
+
 def create_Revenue_Expenses_frame():
 
     revenues_expsenses_window = Tk()
@@ -544,6 +513,7 @@ def create_Revenue_Expenses_frame():
     # Sets title of 'Revenue and Expenses' GUI
     revenues_expsenses_window.title('Revenue and Expneses Summary File Upload')
 
+    # Sets label for GUI
     re_label = Label(revenues_expsenses_window,
                      text="Revenue and Expenses Summary")
     re_label.config(font=("Courier", 34))
@@ -570,6 +540,7 @@ def create_Revenue_Expenses_frame():
                                                                                            re_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
 
+    # Performs Calculations
     def analyze_revenue_expenses():
         df = pd.read_excel(
             filepath, sheet_name=1)
@@ -681,9 +652,9 @@ btn_Revenue_Expenses = Button(main_window, text="Statement of Revenue and Expens
                               command=create_Revenue_Expenses_frame, width=50, height=3, fg='green')
 btn_Revenue_Expenses.place(x=50, y=400)
 
-
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue and Expenses Comparison to Year Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Creates 'Revenue and Expenses Comparison to Prev Year' window
+
 
 def create_Revenue_Expenses_Comparison_frame():
 
@@ -851,13 +822,10 @@ btn_Revenue_Expenses_Comparison = Button(main_window, text="Statement of Revenue
                                          command=create_Revenue_Expenses_Comparison_frame, width=50, height=3, fg='green')
 btn_Revenue_Expenses_Comparison.place(x=50, y=500)
 
-# Creates 'Revenue and Expenses Compared to Budget' window
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue Expenses Budget Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-# Mayble include table for negative values??????????????????????????
-
-
+# Creates 'Revenue and Expenses Compared to Budget' window
 def create_Revenue_Expenses_Budget_frame():
 
     revenues_expsenses_budget_window = Tk()
@@ -896,6 +864,7 @@ def create_Revenue_Expenses_Budget_frame():
                                                                                                   re_B_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
     btn_file_upload.place(x=400, y=550)
 
+    # Performs Calculations
     def analyze_revenue_expneses_budget():
 
         df = pd.read_excel(
@@ -973,7 +942,6 @@ def create_Revenue_Expenses_Budget_frame():
         canvas2.get_tk_widget().place(relx=.12, rely=.7, anchor=CENTER)
 
         # Creation of NOW Current Table
-
         now_current_data = [[df['Unnamed: 6'][0], current_month_now],
                             [df['Unnamed: 8'][0], current_month_budget_now],
                             [df['Unnamed: 10'][0], current_month_obudget_now]
@@ -1088,8 +1056,8 @@ btn_Revenue_Expenses_Budget.place(x=50, y=600)
 
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Revenue Expnese by Program Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# Creates 'Revenue and Expenses by Program' window
 
+# Creates 'Revenue and Expenses by Program' window
 def create_Revenue_Expenses_Program_frame():
 
     revenues_expsenses_program_window = Tk()
@@ -1185,7 +1153,6 @@ def create_Revenue_Expenses_Program_frame():
             te_axs.fig.suptitle('Expenses by Program')
             plt.xlabel("Programs")
             plt.ylabel("$ Amount")
-
             plt.axis('tight')
             plt.ylim(0, None)
             ax = te_axs.axes[0, 0]
@@ -1260,7 +1227,6 @@ btn_Revenue_Expenses_Program = Button(main_window, text="Statement of Revenue an
                                       command=create_Revenue_Expenses_Program_frame, width=50, height=3, fg='green')
 btn_Revenue_Expenses_Program.place(x=50, y=700)
 
-
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Exit button to close program
 btn_exit = Button(main_window, text="Exit",
@@ -1274,6 +1240,5 @@ load = Image.open(
 render = ImageTk.PhotoImage((load))
 photo = Label(main_window, image=render)
 photo.place(x=600, y=100)
-
 
 main_window.mainloop()
