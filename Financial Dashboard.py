@@ -8,7 +8,7 @@ Created on Wed Feb  9 16:36:45 2022
 
 from tkinter import Tk, Button, Text, Label, CENTER, INSERT
 from tkinter import filedialog
-from PIL import Image
+from PIL import ImageTk, Image
 import os
 import pandas as pd
 import numpy as np
@@ -16,6 +16,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pyautogui
+from datetime import date
 
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -23,6 +24,12 @@ import pyautogui
 main_window = Tk()
 main_window.attributes('-fullscreen', True)
 main_window.title("Pueblo Cooperative Care")
+
+load2 = Image.open(
+    "Pueblo-Coop-Care-2018-Logo.png")
+render2 = ImageTk.PhotoImage((load2))
+photo2 = Label(main_window, image=render2)
+photo2.pack(side="bottom", anchor="e")
 
 
 # Open file explorer method
@@ -43,13 +50,13 @@ def browseFiles():
 
 
 def create_AP_Summary_frame():
+    # Hides 'Main Screen' GUI
+    main_window.withdraw()
+
     # Creates GUI object and sets size of GUI
     ap_summary_window = Tk()
     ap_summary_window.attributes('-fullscreen', True)
     ap_summary_window.title("AP Summary")
-
-    # Hides 'Main Screen' GUI
-    main_window.withdraw()
 
     # Sets title of 'AP Summary File Upload' GUI
     ap_summary_window.title('AP Summary File Upload')
@@ -70,16 +77,21 @@ def create_AP_Summary_frame():
 
     # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
     btn_home = Button(ap_summary_window, text="Back to Main", command=lambda: [ap_summary_window.destroy(), main_window.deiconify()],
-                      width=20, height=3, fg='green')
+                      width=20, height=3, fg='#023859')
 
     # Button for selecting 'AP Summary' file for upload and location on 'AP Summary Frame' GUI
     btn_home.place(x=100, y=550)
     btn_file_upload = Button(ap_summary_window, text="Find File", command=lambda: [txt_file.configure(state='normal'), txt_file.delete('1.0', "end"),
-                                                                                   browseFiles(), txt_file.insert(INSERT, filepath),
-                                                                                   txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+                                                                                   browseFiles(), txt_file.insert(INSERT, filepath),                                                                              txt_file.configure(state='disabled')], width=20, height=3, fg='#023859')
     btn_file_upload.place(x=400, y=550)
 
+    # Button event handler for calling 'analyze_ap_summary' function and button position
+    btn_analyze = Button(ap_summary_window, text="Analyze File", command=lambda: [anaylze_AP_summary()],
+                         width=20, height=3, fg='#023859')
+    btn_analyze.place(x=700, y=550)
+
     # Nested fuction for ETL of 'AP Summary' .xslx file
+
     def anaylze_AP_summary():
         df = pd.read_excel(
             filepath, sheet_name=1)
@@ -132,49 +144,56 @@ def create_AP_Summary_frame():
         canvas.get_tk_widget().place(relx=.4, rely=.1,)
 
         # Hides 'AP Summary GUI'
-        ap_summary_window.withdraw()
+        ap_summary_window.destroy()
 
-        #Buttons for AP Summary
+        # Buttons / Labels for AP Summary
+        label_ap = Label(ap_analyze_window, text="AP Summary")
+        label_ap.config(font=("Courier", 34))
+        label_ap.pack(side="top", anchor="center")
+
+        ap_txt_file = Text(ap_analyze_window, height=4,
+                           width=100, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+        ap_txt_file.pack(side="bottom")
+        ap_txt_file.insert(INSERT, "Notes:    ")
 
         btn_main = Button(ap_analyze_window, text="Back to Main", command=lambda: [ap_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
-                          width=20, height=3, fg='green')
+                          width=20, height=3, fg='#023859')
         btn_main.place(x=1700, y=300)
 
         btn2_exit = Button(ap_analyze_window, text="Exit",
-                           command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+                           command=lambda: [os._exit(0)], width=20, height=3, fg='#023859')
         btn2_exit.place(x=1700, y=400)
-
-        # method to capture GUI image, saves as png, and converts to pdf
-        def save_data():
-
-            screenshottaker = pyautogui.screenshot()
-            save_path = filedialog.asksaveasfilename()
-            screenshottaker.save(save_path+".png")
-
-            saved_image = Image.open(save_path+".png")
-            im_1 = saved_image.convert('RGB')
-            im_1.save(save_path+".pdf")
-            os.remove(save_path+".png")
 
         # Saves 'Analyze' GUI frame
         btn_pdf = Button(ap_analyze_window, text="Save as PDF", command=lambda: [save_data()],
-                         width=20, height=3, fg='green')
+                         width=20, height=3, fg='#023859')
         btn_pdf.place(x=1700, y=200)
 
-        ap_analyze_window.mainloop()
+        ap_date_label = Label(ap_analyze_window, text=date.today().strftime("%B %d, %Y"),
+                              width=20, height=3, fg='black')
+        ap_date_label.config(font=("Courier", 16))
+        ap_date_label.place(x=1600, y=500)
 
-    # Button event handler for calling 'analyze_ap_summary' function and button position
-    btn_analyze = Button(ap_summary_window, text="Analyze File", command=anaylze_AP_summary,
-                         width=20, height=3, fg='green')
-    btn_analyze.place(x=700, y=550)
+        # method to capture GUI image, saves as png, and converts to pdf
+
+    def save_data():
+
+        screenshottaker = pyautogui.screenshot()
+        save_path = filedialog.asksaveasfilename()
+        screenshottaker.save(save_path+".png")
+
+        saved_image = Image.open(save_path+".png")
+        im_1 = saved_image.convert('RGB')
+        im_1.save(save_path+".pdf")
+        os.remove(save_path+".png")
 
     # Displays 'AP Summary' GUI
     ap_summary_window.mainloop()
 
 
 # Creates Button on main window for 'AP Summary' Option
-btn_AP_Summary = Button(main_window, text="AP Summary", command=create_AP_Summary_frame,
-                        width=50, height=3, fg='green')
+btn_AP_Summary = Button(main_window, text="AP Summary", command=lambda: [create_AP_Summary_frame()],
+                        width=50, height=3, fg='#023859')
 btn_AP_Summary.place(x=50, y=100)
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ AR Summary Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -209,13 +228,13 @@ def create_AR_Summary_frame():
 
     # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
     btn_home = Button(ar_summary_window, text="Back to Main", command=lambda: [ar_summary_window.destroy(), main_window.deiconify()],
-                      width=20, height=3, fg='green')
+                      width=20, height=3, fg='#023859')
 
     # Button for selecting 'AR Summary' file for upload and location on 'AR Summary Frame' GUI
     btn_home.place(x=100, y=550)
     btn_file_upload = Button(ar_summary_window, text="Find File", command=lambda: [ar_txt_file.configure(state='normal'), ar_txt_file.delete('1.0', "end"),
                                                                                    browseFiles(), ar_txt_file.insert(INSERT, filepath),
-                                                                                   ar_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+                                                                                   ar_txt_file.configure(state='disabled')], width=20, height=3, fg='#023859')
     btn_file_upload.place(x=400, y=550)
 
     # Nested fuction for ETL of 'AR Summary' .xslx file
@@ -272,18 +291,34 @@ def create_AR_Summary_frame():
         # Hides 'AR Summary GUI'
         ar_summary_window.withdraw()
 
-        #Buttons for AR Summary
+        # Buttons for AR Summary
+
+        # Buttons for AP Summary
+        label_ar = Label(ar_analyze_window, text="AR Summary")
+        label_ar.config(font=("Courier", 34))
+        label_ar.pack(side="top", anchor="center")
+
         btn_pdf = Button(ar_analyze_window, text="Save as PDF", command=lambda: [save_data()],
-                         width=20, height=3, fg='green')
+                         width=20, height=3, fg='#023859')
         btn_pdf.place(x=1700, y=200)
 
         btn_main = Button(ar_analyze_window, text="Back to Main", command=lambda: [ar_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
-                          width=20, height=3, fg='green')
+                          width=20, height=3, fg='#023859')
         btn_main.place(x=1700, y=300)
 
         btn2_exit = Button(ar_analyze_window, text="Exit",
-                           command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+                           command=lambda: [os._exit(0)], width=20, height=3, fg='#023859')
         btn2_exit.place(x=1700, y=400)
+
+        ar_txt_file = Text(ar_analyze_window, height=4,
+                           width=100, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+        ar_txt_file.pack(side="bottom")
+        ar_txt_file.insert(INSERT, "Notes:    ")
+
+        ar_date_label = Label(ar_analyze_window, text=date.today().strftime("%B %d, %Y"),
+                              width=20, height=3, fg='black')
+        ar_date_label.config(font=("Courier", 16))
+        ar_date_label.place(x=1600, y=500)
 
         # method to capture GUI image, saves as png, and converts to pdf
         def save_data():
@@ -302,7 +337,7 @@ def create_AR_Summary_frame():
 
     # Button event handler for calling 'analyze_AR_summary' function and button position
     btn_analyze = Button(ar_summary_window, text="Analyze File", command=anaylze_AR_summary,
-                         width=20, height=3, fg='green')
+                         width=20, height=3, fg='#023859')
     btn_analyze.place(x=700, y=550)
 
     # Displays 'AR Summary' GUI
@@ -311,7 +346,7 @@ def create_AR_Summary_frame():
 
 # Creates Button on main window for 'AR Summary' Option
 btn_AR_Summary = Button(main_window, text="AR Summary", command=create_AR_Summary_frame,
-                        width=50, height=3, fg='green')
+                        width=50, height=3, fg='#023859')
 btn_AR_Summary.place(x=50, y=200)
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Assets Liabilites Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -345,14 +380,14 @@ def create_assets_liabilities_Summary_frame():
 
     # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
     btn_home = Button(al_summary_window, text="Back to Main", command=lambda: [al_summary_window.destroy(), main_window.deiconify()],
-                      width=20, height=3, fg='green')
+                      width=20, height=3, fg='#023859')
 
     btn_home.place(x=100, y=550)
 
     # Button for selecting Assets Liabilities' file for upload and location on Assets Liabilities' GUI
     btn_file_upload = Button(al_summary_window, text="Find File", command=lambda: [al_txt_file.configure(state='normal'), al_txt_file.delete('1.0', "end"),
                                                                                    browseFiles(), al_txt_file.insert(INSERT, filepath),
-                                                                                   al_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+                                                                                   al_txt_file.configure(state='disabled')], width=20, height=3, fg='#023859')
     btn_file_upload.place(x=400, y=550)
 
     def analyze_AL_summary():
@@ -391,18 +426,18 @@ def create_assets_liabilities_Summary_frame():
 
             ax = ta_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            ta_axs.fig.set_size_inches(10, 7.5)
+            ta_axs.fig.set_size_inches(10, 6.5)
             return ta_axs.fig
 
         ta_fig = create_total_assets_bar()
         canvas = FigureCanvasTkAgg(ta_fig, master=al_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.01, rely=.02)
+        canvas.get_tk_widget().place(relx=.01, rely=.09)
 
         # creates total liabilities bar graph
         def create_total_liabilities_bar():
-            sns.set_palette(['red', 'green'])
+            sns.set_palette(['red', '#023859'])
             tl_axs = sns.catplot(x=['Jan 1, 22', 'Jan 1, 21'], y=[current_year_total_liabilities, prev_year_total_liabilities],
                                  data=df, kind='bar')
             tl_axs.fig.suptitle('Total Liabilities Summary')
@@ -411,7 +446,7 @@ def create_assets_liabilities_Summary_frame():
 
             ax = tl_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            tl_axs.fig.set_size_inches(10, 7.5)
+            tl_axs.fig.set_size_inches(10, 6.5)
             return tl_axs.fig
 
         tl_fig = create_total_liabilities_bar()
@@ -419,7 +454,7 @@ def create_assets_liabilities_Summary_frame():
 
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=0.4, rely=.02,)
+        canvas.get_tk_widget().place(relx=0.4, rely=.09,)
 
         # create total equity bar graph
         def create_total_equity_bar():
@@ -432,33 +467,14 @@ def create_assets_liabilities_Summary_frame():
 
             ax = te_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            te_axs.fig.set_size_inches(10, 6.8)
+            te_axs.fig.set_size_inches(10, 5.8)
             return te_axs.fig
 
         te_fig = create_total_equity_bar()
         canvas = FigureCanvasTkAgg(te_fig, master=al_analyze_window)
         canvas.draw()
-        canvas.get_tk_widget().place(relx=.01, rely=.53)
+        canvas.get_tk_widget().place(relx=.01, rely=.57)
 
-        def pdf_Print():
-            f = 5
-          # fp = tempfile.TemporaryFile()
-          # fp.write(ap_analyze_window)
-
-          # ps = canvas..postscript(colormode='color')
-          # img = Image.open(io.BytesIO(ps.encode('utf-8')))
-          # img.save('filename.jpg', 'jpeg')
-
-          # postscript_file = "tmp_snapshot.ps"
-          # subprocess.call(["impg", "-window", "td", postscript_file])
-
-        # WIP Button for Printing 'Canvas' and button position
-        # btn_print = Button(al_analyze_window, text="Print as PDF", command=pdf_Print(),
-        #                    width=20, height=3, fg='green')
-
-        # btn_print.place(x=100, y=700)
-
-        # method to capture GUI image, saves as png, and converts to pdf
         def save_data():
 
             screenshottaker = pyautogui.screenshot()
@@ -472,22 +488,37 @@ def create_assets_liabilities_Summary_frame():
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(al_analyze_window, text="Save as PDF", command=lambda: [save_data()],
-                         width=20, height=3, fg='green')
+                         width=20, height=3, fg='#023859')
         btn_pdf.place(x=1700, y=200)
 
         btn_main = Button(al_analyze_window, text="Back to Main", command=lambda: [al_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
-                          width=20, height=3, fg='green')
+                          width=20, height=3, fg='#023859')
         btn_main.place(x=1700, y=300)
 
         btn_exit = Button(al_analyze_window, text="Exit",
-                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='#023859')
         btn_exit.place(x=1700, y=400)
+
+        al_analyze_label = Label(
+            al_analyze_window, text='(' + df['Unnamed: 6'][0]+' - ' + df['Unnamed: 8'][0]+')' + " Assets Liabilities Summary")
+        al_analyze_label.config(font=("Courier", 34))
+        al_analyze_label.pack(side="top", anchor="center")
+
+        al_txt_file = Text(al_analyze_window, height=4,
+                           width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+        al_txt_file.pack(side="bottom", anchor='e')
+        al_txt_file.insert(INSERT, "Notes:    ")
+
+        al_date_label = Label(al_analyze_window, text=date.today().strftime("%B %d, %Y"),
+                              width=20, height=3, fg='black')
+        al_date_label.config(font=("Courier", 16))
+        al_date_label.place(x=1600, y=500)
 
         al_summary_window.withdraw()
         al_analyze_window.mainloop()
 
     btn_analyze = Button(al_summary_window, text="Analyze File", command=analyze_AL_summary,
-                         width=20, height=3, fg='green')
+                         width=20, height=3, fg='#023859')
     btn_analyze.place(x=700, y=550)
 
     al_summary_window.mainloop()
@@ -495,7 +526,7 @@ def create_assets_liabilities_Summary_frame():
 
 # Creates Button on main window for 'Statement of Assets-Liabilities' Option
 btn_Assets_Liabilities = Button(main_window, text="Statement of Assets-Liabilities",
-                                command=create_assets_liabilities_Summary_frame, width=50, height=3, fg='green')
+                                command=create_assets_liabilities_Summary_frame, width=50, height=3, fg='#023859')
 btn_Assets_Liabilities.place(x=50, y=300)
 
 
@@ -530,13 +561,13 @@ def create_Revenue_Expenses_frame():
 
     # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
     btn_home = Button(revenues_expsenses_window, text="Back to Main", command=lambda: [revenues_expsenses_window.destroy(), main_window.deiconify()],
-                      width=20, height=3, fg='green')
+                      width=20, height=3, fg='#023859')
 
     # Button for selecting 'Revenue and Expenses' file for upload and location on ''Revenue and Expenses' GUI
     btn_home.place(x=100, y=550)
     btn_file_upload = Button(revenues_expsenses_window, text="Find File", command=lambda: [re_txt_file.configure(state='normal'), re_txt_file.delete('1.0', "end"),
                                                                                            browseFiles(), re_txt_file.insert(INSERT, filepath),
-                                                                                           re_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+                                                                                           re_txt_file.configure(state='disabled')], width=20, height=3, fg='#023859')
     btn_file_upload.place(x=400, y=550)
 
     def analyze_revenue_expenses():
@@ -577,7 +608,8 @@ def create_Revenue_Expenses_frame():
         def create_plot():
             axs = sns.catplot(x=0, y=1,
                               data=df2, kind='bar')
-            axs.fig.suptitle('Current Program Expenses')
+            axs.fig.suptitle('"' + df['Unnamed: 6']
+                             [0]+'"' + ' Program Expenses')
             axs.fig.set_size_inches(10, 10)
             plt.ylabel('Amount ($)')
             plt.xlabel('Programs')
@@ -588,7 +620,8 @@ def create_Revenue_Expenses_frame():
 
             axs2 = sns.catplot(x=0, y=2,
                                data=df2, kind='bar')
-            axs2.fig.suptitle('Previous Year Program Expenses')
+            axs2.fig.suptitle('"' + df['Unnamed: 8']
+                              [0] + '"' + ' Program Expenses')
             axs2.fig.set_size_inches(10, 10)
             plt.ylabel('Amount ($)')
             plt.xlabel('Programs')
@@ -607,12 +640,12 @@ def create_Revenue_Expenses_frame():
         canvas.draw()
         canvas2.draw()
 
-        canvas.get_tk_widget().place(relx=.01, rely=.02, )
+        canvas.get_tk_widget().place(relx=.01, rely=.12, )
 
-        canvas2.get_tk_widget().place(relx=.4, rely=.02, )
+        canvas2.get_tk_widget().place(relx=.4, rely=.12, )
 
         btn_main = Button(rev_exp_analyze_window, text="Back to Main", command=lambda: [rev_exp_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
-                          width=20, height=3, fg='green')
+                          width=20, height=3, fg='#023859')
         btn_main.place(x=1700, y=300)
 
         # method to capture GUI image, saves as png, and converts to pdf
@@ -629,17 +662,22 @@ def create_Revenue_Expenses_frame():
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(rev_exp_analyze_window, text="Save as PDF", command=lambda: [save_data()],
-                         width=20, height=3, fg='green')
+                         width=20, height=3, fg='#023859')
         btn_pdf.place(x=1700, y=200)
 
         btn_exit = Button(rev_exp_analyze_window, text="Exit",
-                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='#023859')
         btn_exit.place(x=1700, y=400)
+
+        re_label_analyze = Label(rev_exp_analyze_window, text='(' + (df['Unnamed: 6'][0]) + " & "
+                                 + (df['Unnamed: 8'][0]) + ')' + "Revenue and Expenses Summary")
+        re_label_analyze.config(font=("Courier", 30))
+        re_label_analyze.pack(side="top", anchor="center")
 
         rev_exp_analyze_window.mainloop()
 
     btn_rev_exp_analyze = Button(revenues_expsenses_window, text="Analyze File", command=analyze_revenue_expenses,
-                                 width=20, height=3, fg='green')
+                                 width=20, height=3, fg='#023859')
     btn_rev_exp_analyze.place(x=700, y=550)
 
     revenues_expsenses_window.mainloop()
@@ -647,7 +685,7 @@ def create_Revenue_Expenses_frame():
 
 # Creates Button on main window for 'Statement Revenue and Expenses' Option
 btn_Revenue_Expenses = Button(main_window, text="Statement of Revenue and Expenses",
-                              command=create_Revenue_Expenses_frame, width=50, height=3, fg='green')
+                              command=create_Revenue_Expenses_frame, width=50, height=3, fg='#023859')
 btn_Revenue_Expenses.place(x=50, y=400)
 
 
@@ -683,13 +721,13 @@ def create_Revenue_Expenses_Comparison_frame():
 
     # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
     btn_home = Button(revenues_expsenses_comparison_window, text="Back to Main", command=lambda: [revenues_expsenses_comparison_window.destroy(), main_window.deiconify()],
-                      width=20, height=3, fg='green')
+                      width=20, height=3, fg='#023859')
 
     # Button for selecting 'Revenue and Expenses Comparison' file for upload and location on 'Revenue and Expenses Comparison' GUI
     btn_home.place(x=100, y=550)
     btn_file_upload = Button(revenues_expsenses_comparison_window, text="Find File", command=lambda: [re_C_txt_file.configure(state='normal'), re_C_txt_file.delete('1.0', "end"),
                                                                                                       browseFiles(), re_C_txt_file.insert(INSERT, filepath),
-                                                                                                      re_C_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+                                                                                                      re_C_txt_file.configure(state='disabled')], width=20, height=3, fg='#023859')
     btn_file_upload.place(x=400, y=550)
 
     # Function for analyzing "Revenue and Expenses" Excel FIle
@@ -725,10 +763,10 @@ def create_Revenue_Expenses_Comparison_frame():
         def create_food_sack_bar():
 
             sns.set_palette(['orange', 'purple', 'grey'])
-            fs_axs = sns.catplot(x=['Current Year', 'Previous Year', '$ Change'], y=[current_year_expenses_food_sack, prev_year_expenses_food_sack, delta_food_sack],
+            fs_axs = sns.catplot(x=[df['Unnamed: 7'][0], df['Unnamed: 9'][0], df['Unnamed: 11'][0]], y=[current_year_expenses_food_sack, prev_year_expenses_food_sack, delta_food_sack],
                                  data=df, kind='bar')
             fs_axs.fig.suptitle('Food Sack Expenses')
-            plt.xlabel("Dates")
+            plt.xlabel("Date Range")
             plt.ylabel("$ Amount")
             plt.ylim(0, None)
             ax = fs_axs.axes[0, 0]
@@ -740,15 +778,15 @@ def create_Revenue_Expenses_Comparison_frame():
         canvas = FigureCanvasTkAgg(fs_fig, master=repy_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.01, rely=.01, )
+        canvas.get_tk_widget().place(relx=.01, rely=.071, )
 
         # Creates NOW bar graph
         def create_now_bar():
-            sns.set_palette(['red', 'green', 'teal'])
-            now_axs = sns.catplot(x=['Current Year', 'Previous Year', '$ Change'], y=[current_year_expenses_now, prev_year_expenses_now, delta_expenses_now],
+            sns.set_palette(['red', '#023859', 'teal'])
+            now_axs = sns.catplot(x=[df['Unnamed: 7'][0], df['Unnamed: 9'][0], df['Unnamed: 11'][0]], y=[current_year_expenses_now, prev_year_expenses_now, delta_expenses_now],
                                   data=df, kind='bar')
             now_axs.fig.suptitle('NOW Expenses')
-            plt.xlabel("Programs")
+            plt.xlabel("Date Range")
             plt.ylabel("$ Amount")
             plt.ylim(0, None)
             ax = now_axs.axes[0, 0]
@@ -760,33 +798,33 @@ def create_Revenue_Expenses_Comparison_frame():
         canvas = FigureCanvasTkAgg(now_fig, master=repy_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.4, rely=.01, )
+        canvas.get_tk_widget().place(relx=.4, rely=.071, )
 
         # Creates 'Mobile Shower' Bar graph
         def create_mobile_shower_bar():
             sns.set_palette(['teal', 'grey', 'brown'])
-            ms_axs = sns.catplot(x=['Current Year', 'Previous Year', '$ Change'], y=[current_expenses_mshower, prev_year_expenses_mshower, delta_expenses_mshower],
+            ms_axs = sns.catplot(x=[df['Unnamed: 7'][0], df['Unnamed: 9'][0], df['Unnamed: 11'][0]], y=[current_expenses_mshower, prev_year_expenses_mshower, delta_expenses_mshower],
                                  data=df, kind='bar')
-            ms_axs.fig.suptitle('Net Income by Program')
-            plt.xlabel("Programs")
+            ms_axs.fig.suptitle('Mobile Shower Expenses')
+            plt.xlabel("Date Range")
             plt.ylabel("$ Amount")
-            plt.ylim(0, None)
+            plt.ylim(delta_expenses_mshower, None)
             ax = ms_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            ms_axs.fig.set_size_inches(10, 7)
+            ms_axs.fig.set_size_inches(10, 6.5)
             return ms_axs.fig
 
         ms_fig = create_mobile_shower_bar()
         canvas = FigureCanvasTkAgg(ms_fig, master=repy_analyze_window)
         canvas.draw()
-        canvas.get_tk_widget().place(relx=.01, rely=.5,)
+        canvas.get_tk_widget().place(relx=.01, rely=.56,)
 
         btn_main = Button(repy_analyze_window, text="Back to Main", command=lambda: [repy_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
-                          width=20, height=3, fg='green')
+                          width=20, height=3, fg='#023859')
         btn_main.place(x=1700, y=300)
 
         btn_exit = Button(repy_analyze_window, text="Exit",
-                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='#023859')
         btn_exit.place(x=1700, y=400)
 
         # method to capture GUI image, saves as png, and converts to pdf
@@ -803,13 +841,28 @@ def create_Revenue_Expenses_Comparison_frame():
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(repy_analyze_window, text="Save as PDF", command=lambda: [save_data()],
-                         width=20, height=3, fg='green')
+                         width=20, height=3, fg='#023859')
         btn_pdf.place(x=1700, y=200)
+
+        repy_analyze_label = Label(repy_analyze_window,
+                                   text="Revenue and Expenses Compared to Previous Year Summary")
+        repy_analyze_label.config(font=("Courier", 32))
+        repy_analyze_label.pack(side="top", anchor="center")
+
+        repy_txt_file = Text(repy_analyze_window, height=4,
+                             width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+        repy_txt_file.pack(side="bottom", anchor='e')
+        repy_txt_file.insert(INSERT, "Notes:    ")
+
+        repy_date_label = Label(repy_analyze_window, text=date.today().strftime("%B %d, %Y"),
+                                width=20, height=3, fg='black')
+        repy_date_label.config(font=("Courier", 16))
+        repy_date_label.place(x=1600, y=500)
 
         repy_analyze_window.mainloop()
 
     btn_rec_analyze = Button(revenues_expsenses_comparison_window, text="Analyze File", command=analyze_revenue_expenses_comparision,
-                             width=20, height=3, fg='green')
+                             width=20, height=3, fg='#023859')
     btn_rec_analyze.place(x=700, y=550)
 
     revenues_expsenses_comparison_window.mainloop()
@@ -817,7 +870,7 @@ def create_Revenue_Expenses_Comparison_frame():
 
 # Creates Button on main window for 'Statement of Assets-Liabilities' Option
 btn_Revenue_Expenses_Comparison = Button(main_window, text="Statement of Revenue and Expenses Comparison by Year",
-                                         command=create_Revenue_Expenses_Comparison_frame, width=50, height=3, fg='green')
+                                         command=create_Revenue_Expenses_Comparison_frame, width=50, height=3, fg='#023859')
 btn_Revenue_Expenses_Comparison.place(x=50, y=500)
 
 # Creates 'Revenue and Expenses Compared to Budget' window
@@ -856,13 +909,13 @@ def create_Revenue_Expenses_Budget_frame():
 
     # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
     btn_home = Button(revenues_expsenses_budget_window, text="Back to Main", command=lambda: [revenues_expsenses_budget_window.destroy(), main_window.deiconify()],
-                      width=20, height=3, fg='green')
+                      width=20, height=3, fg='#023859')
 
     # Button for selecting 'Revenue and Expenses Compared to Budget' file for upload and location on 'Revenue and Expenses Compared to Budget' GUI
     btn_home.place(x=100, y=550)
     btn_file_upload = Button(revenues_expsenses_budget_window, text="Find File", command=lambda: [re_B_txt_file.configure(state='normal'), re_B_txt_file.delete('1.0', "end"),
                                                                                                   browseFiles(), re_B_txt_file.insert(INSERT, filepath),
-                                                                                                  re_B_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+                                                                                                  re_B_txt_file.configure(state='disabled')], width=20, height=3, fg='#023859')
     btn_file_upload.place(x=400, y=550)
 
     def analyze_revenue_expneses_budget():
@@ -889,7 +942,8 @@ def create_Revenue_Expenses_Budget_frame():
         current_ytd_obudget_now = (df['Unnamed: 16'][108])
         current_ytd_abudget_now = (df['Unnamed: 18'][108])
 
-        current_month_ms = (df['Unnamed: 6'][121])
+        current_month_ms = (str((df['Unnamed: 6'][121])))
+
         current_month_budget_ms = (df['Unnamed: 8'][121])
         current_month_obudget_ms = (df['Unnamed: 10'][121])
 
@@ -903,6 +957,9 @@ def create_Revenue_Expenses_Budget_frame():
                            [df['Unnamed: 8'][0], current_month_budget_fs],
                            [df['Unnamed: 10'][0], current_month_obudget_fs]
                            ]
+        colors = [['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9']]
 
         reb_exp_analyze_window = Tk()
         reb_exp_analyze_window.attributes('-fullscreen', True)
@@ -912,34 +969,39 @@ def create_Revenue_Expenses_Budget_frame():
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("Current Food Shelter Budget", fontsize=16)
+        fs_label = str(df['Unnamed: 6'][0])
+        plt.title("\u0332".join(fs_label)+" Food Shelter Budget", fontsize=16)
 
-        fig.set_size_inches(6, 6)
-        cfs_table = ax.table(fs_current_data, loc='center')
-        cfs_table.scale(1, 7)
+        fig.set_size_inches(6, 5)
+        cfs_table = ax.table(fs_current_data, loc='center', cellColours=colors)
+        cfs_table.scale(1, 6)
         cfs_table.set_fontsize(16)
         canvas = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas.draw()
-        canvas.get_tk_widget().place(relx=.12, rely=.22, anchor=CENTER)
+        canvas.get_tk_widget().place(relx=.12, rely=.26, anchor=CENTER)
 
         # Creation of Food Shelter YTD Table
         fs_ytd_data = [[df['Unnamed: 12'][0], current_months_budget_fs],
                        [df['Unnamed: 14'][0], current_ytd_budget_fs],
                        [df['Unnamed: 16'][0], current_ytd_obudget_fs],
                        [df['Unnamed: 18'][0], current_ytd_abudget_fs]]
+        colors = [['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9'], ['#F2F2F2', '#96D2D9']]
 
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("YTD Food Shelter Budget", fontsize=16)
-
-        ytd_fs_table = ax.table(fs_ytd_data, loc='center')
-        fig.set_size_inches(6, 7)
-        ytd_fs_table.scale(1, 4.5)
+        fs_ytd_label = str(df['Unnamed: 12'][0])
+        plt.title("\u0332".join(fs_ytd_label) +
+                  " Food Shelter Budget", fontsize=16)
+        ytd_fs_table = ax.table(fs_ytd_data, loc='center', cellColours=colors)
+        fig.set_size_inches(6, 6)
+        ytd_fs_table.scale(1, 4)
         ytd_fs_table.set_fontsize(16)
         canvas2 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas2.draw()
-        canvas2.get_tk_widget().place(relx=.12, rely=.7, anchor=CENTER)
+        canvas2.get_tk_widget().place(relx=.12, rely=.65, anchor=CENTER)
 
         # Creation of NOW Current Table
 
@@ -948,17 +1010,22 @@ def create_Revenue_Expenses_Budget_frame():
                             [df['Unnamed: 10'][0], current_month_obudget_now]
                             ]
 
+        colors = [['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9']]
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("Current NOW Budget", fontsize=16)
-        fig.set_size_inches(6, 6)
-        table_data = ax.table(now_current_data, loc='center')
+        now_label = str(df['Unnamed: 6'][0])
+        plt.title("\u0332".join(now_label)+" NOW Budget", fontsize=16)
+        fig.set_size_inches(6, 5)
+        table_data = ax.table(
+            now_current_data, loc='center', cellColours=colors)
         table_data.set_fontsize(16)
-        table_data.scale(1, 7)
+        table_data.scale(1, 6)
         canvas3 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas3.draw()
-        canvas3.get_tk_widget().place(relx=.4, rely=.22, anchor=CENTER)
+        canvas3.get_tk_widget().place(relx=.4, rely=.26, anchor=CENTER)
 
         # Create of NOW YTD Table
         now_ytd_data = [[df['Unnamed: 12'][0], current_year_budget_now],
@@ -966,17 +1033,22 @@ def create_Revenue_Expenses_Budget_frame():
                         [df['Unnamed: 16'][0], current_ytd_obudget_now],
                         [df['Unnamed: 18'][0], current_ytd_abudget_now]]
 
+        colors = [['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9'], ['#F2F2F2', '#96D2D9']]
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("YTD NOW Budget", fontsize=16)
-        fig.set_size_inches(6, 7)
-        ytd_now_table = ax.table(now_ytd_data, loc='center')
-        ytd_now_table.scale(1, 7.5)
+        now_ytd_label = str(df['Unnamed: 12'][0])
+        plt.title("\u0332".join(now_ytd_label)+" NOW Budget", fontsize=16)
+        fig.set_size_inches(6, 6)
+        ytd_now_table = ax.table(
+            now_ytd_data, loc='center', cellColours=colors)
+        ytd_now_table.scale(1, 6.5)
         ytd_now_table.set_fontsize(16)
         canvas4 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas4.draw()
-        canvas4.get_tk_widget().place(relx=.4, rely=.7, anchor=CENTER)
+        canvas4.get_tk_widget().place(relx=.4, rely=.65, anchor=CENTER)
 
         # Creation of Mobile Show Current Table
         ms_current_data = [[df['Unnamed: 6'][0], current_month_ms],
@@ -987,37 +1059,49 @@ def create_Revenue_Expenses_Budget_frame():
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("Current Mobile Shower Budget", fontsize=16)
-        fig.set_size_inches(6, 6)
-        cms_table = ax.table(ms_current_data, loc='center')
+        ms_label = str(df['Unnamed: 6'][0])
+
+        plt.title("\u0332".join(ms_label) +
+                  " Mobile Shower Budget", fontsize=16)
+        fig.set_size_inches(6, 5)
+        colors = [['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9']
+                  ]
+        cms_table = ax.table(
+            ms_current_data, loc='center', cellColours=colors,)
         cms_table.set_fontsize(16)
-        cms_table.scale(1, 7)
+        cms_table.scale(1, 6)
         canvas5 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas5.draw()
-        canvas5.get_tk_widget().place(relx=.7, rely=.22, anchor=CENTER)
+        canvas5.get_tk_widget().place(relx=.7, rely=.26, anchor=CENTER)
 
         # Create YTD Mobile Shower Table
         ms_ytd_data = [[df['Unnamed: 12'][0], current_year_budget_ms],
                        [df['Unnamed: 14'][0], current_ytd_budget_ms],
                        [df['Unnamed: 16'][0], current_ytd_obudget_ms],
                        [df['Unnamed: 18'][0], current_ytd_abudget_ms]]
-
+        colors = [['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9'],
+                  ['#F2F2F2', '#96D2D9'], ['#F2F2F2', '#96D2D9']]
         fig, ax = plt.subplots(1, 1)
         ax.axis('off')
         ax.axis('tight')
-        plt.title("YTD Mobile Shower Budget", fontsize=16)
-        fig.set_size_inches(6, 7)
-        ytd_ms_table = ax.table(ms_ytd_data, loc='center', )
-        ytd_ms_table.scale(1, 7.5)
+        ms_ytd_label = str(df['Unnamed: 12'][0])
+        plt.title("\u0332".join(ms_ytd_label) +
+                  " Mobile Shower Budget", fontsize=16)
+        fig.set_size_inches(6, 6)
+        ytd_ms_table = ax.table(ms_ytd_data, loc='center', cellColours=colors)
+        ytd_ms_table.scale(1, 6.5)
         ytd_ms_table.set_fontsize(16)
         canvas6 = FigureCanvasTkAgg(fig, master=reb_exp_analyze_window)
         canvas6.draw()
-        canvas6.get_tk_widget().place(relx=.7, rely=.7, anchor=CENTER)
+        canvas6.get_tk_widget().place(relx=.7, rely=.65, anchor=CENTER)
 
         revenues_expsenses_budget_window.withdraw()
 
         btn_main = Button(reb_exp_analyze_window, text="Back to Main", command=lambda: [reb_exp_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
-                          width=20, height=3, fg='green')
+                          width=20, height=3, fg='#023859')
         btn_main.place(x=1700, y=200)
 
         # method to capture GUI image, saves as png, and converts to pdf
@@ -1034,17 +1118,32 @@ def create_Revenue_Expenses_Budget_frame():
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(reb_exp_analyze_window, text="Save as PDF", command=lambda: [save_data()],
-                         width=20, height=3, fg='green')
+                         width=20, height=3, fg='#023859')
         btn_pdf.place(x=1700, y=300)
 
         btn_exit = Button(reb_exp_analyze_window, text="Exit",
-                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='#023859')
         btn_exit.place(x=1700, y=400)
+
+        recby_analyze_label = Label(reb_exp_analyze_window,
+                                    text="Revenue and Expenses Compared to Budget Summary")
+        recby_analyze_label.config(font=("Courier", 34))
+        recby_analyze_label.pack(side="top", anchor="center")
+
+        recby_txt_file = Text(reb_exp_analyze_window, height=3,
+                              width=100, bg='white', fg='black', font=('Sans Serif', 22, 'italic bold'))
+        recby_txt_file.pack(side="bottom")
+        recby_txt_file.insert(INSERT, "Notes:    ")
+
+        ap_date_label = Label(reb_exp_analyze_window, text=date.today().strftime("%B %d, %Y"),
+                              width=20, height=4, fg='black')
+        ap_date_label.config(font=("Courier", 16))
+        ap_date_label.place(x=1600, y=500)
 
         reb_exp_analyze_window.mainloop()
 
     btn_reb_analyze = Button(revenues_expsenses_budget_window, text="Analyze File", command=analyze_revenue_expneses_budget,
-                             width=20, height=3, fg='green')
+                             width=20, height=3, fg='#023859')
     btn_reb_analyze.place(x=700, y=550)
 
     revenues_expsenses_budget_window.mainloop()
@@ -1052,7 +1151,7 @@ def create_Revenue_Expenses_Budget_frame():
 
 # Creates Button on main window for 'Statement of Revenue and Expense Budget' Option
 btn_Revenue_Expenses_Budget = Button(main_window, text="Statement of Revenue and Expenses Budget",
-                                     command=create_Revenue_Expenses_Budget_frame, width=50, height=3, fg='green')
+                                     command=create_Revenue_Expenses_Budget_frame, width=50, height=3, fg='#023859')
 btn_Revenue_Expenses_Budget.place(x=50, y=600)
 
 
@@ -1088,13 +1187,13 @@ def create_Revenue_Expenses_Program_frame():
 
     # Button for going back to 'Pueblo Cooperative Care (Home)' GUI
     btn_home = Button(revenues_expsenses_program_window, text="Back to Main", command=lambda: [revenues_expsenses_program_window.destroy(), main_window.deiconify()],
-                      width=20, height=3, fg='green')
+                      width=20, height=3, fg='#023859')
 
     # Button for selecting 'Revenue and Expenses by Program' file for upload and location on 'AR Summary Frame' GUI
     btn_home.place(x=100, y=550)
     btn_file_upload = Button(revenues_expsenses_program_window, text="Find File", command=lambda: [re_P_txt_file.configure(state='normal'), re_P_txt_file.delete('1.0', "end"),
                                                                                                    browseFiles(), re_P_txt_file.insert(INSERT, filepath),
-                                                                                                   re_P_txt_file.configure(state='disabled')], width=20, height=3, fg='green')
+                                                                                                   re_P_txt_file.configure(state='disabled')], width=20, height=3, fg='#023859')
     btn_file_upload.place(x=400, y=550)
 
     # fucntion to anayle 'Revenue and Expenses' Excel
@@ -1136,7 +1235,7 @@ def create_Revenue_Expenses_Program_frame():
             plt.ylim(0, None)
             ax = ti_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            ti_axs.fig.set_size_inches(11, 7.5)
+            ti_axs.fig.set_size_inches(11, 6.5)
 
             return ti_axs.fig
 
@@ -1144,11 +1243,11 @@ def create_Revenue_Expenses_Program_frame():
         canvas = FigureCanvasTkAgg(ta_fig, master=rep_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.01, rely=.01,)
+        canvas.get_tk_widget().place(relx=.01, rely=.07,)
 
         # Creates total expenses bar graph
         def create_total_expenses_bar():
-            sns.set_palette(['red', 'green', 'teal'])
+            sns.set_palette(['red', '#023859', 'teal'])
             te_axs = sns.catplot(x=['Food Sack', 'Mobile Shower', 'NOW'], y=[total_expenses_food_sack, total_expenses_mobile_shower, total_expenses_now],
                                  data=df, kind='bar')
             te_axs.fig.suptitle('Expenses by Program')
@@ -1159,7 +1258,7 @@ def create_Revenue_Expenses_Program_frame():
             plt.ylim(0, None)
             ax = te_axs.axes[0, 0]
             plt.bar_label(ax.containers[0], fmt='$%.2f', padding=.01)
-            te_axs.fig.set_size_inches(10, 7)
+            te_axs.fig.set_size_inches(10, 6.5)
 
             return te_axs.fig
 
@@ -1167,7 +1266,7 @@ def create_Revenue_Expenses_Program_frame():
         canvas = FigureCanvasTkAgg(tl_fig, master=rep_analyze_window)
         canvas.draw()
 
-        canvas.get_tk_widget().place(relx=.45, rely=.01,)
+        canvas.get_tk_widget().place(relx=.45, rely=.07,)
 
         # Creates net income bar graph
         def create_net_income_bar():
@@ -1191,7 +1290,7 @@ def create_Revenue_Expenses_Program_frame():
         canvas.get_tk_widget().place(relx=.01, rely=.525,)
 
         btn_main = Button(rep_analyze_window, text="Back to Main", command=lambda: [rep_analyze_window.withdraw(), main_window.deiconify(), plt.close('all')],
-                          width=20, height=3, fg='green')
+                          width=20, height=3, fg='#023859')
         btn_main.place(x=1700, y=300)
 
         # method to capture GUI image, saves as png, and converts to pdf
@@ -1208,17 +1307,32 @@ def create_Revenue_Expenses_Program_frame():
 
         # WIP Button for saving file as 'PDF' and button position
         btn_pdf = Button(rep_analyze_window, text="Save as PDF", command=lambda: [save_data()],
-                         width=20, height=3, fg='green')
+                         width=20, height=3, fg='#023859')
         btn_pdf.place(x=1700, y=200)
 
         btn_exit = Button(rep_analyze_window, text="Exit",
-                          command=lambda: [os._exit(0)], width=20, height=3, fg='green')
+                          command=lambda: [os._exit(0)], width=20, height=3, fg='#023859')
         btn_exit.place(x=1700, y=400)
+
+        rep_analyze_label = Label(rep_analyze_window,
+                                  text="Revenue and Expenses by Progam Summary")
+        rep_analyze_label.config(font=("Courier", 34))
+        rep_analyze_label.pack(side="top", anchor="center")
+
+        rep_txt_file = Text(rep_analyze_window, height=4,
+                            width=50, bg='white', fg='black', font=('Sans Serif', 23, 'italic bold'))
+        rep_txt_file.pack(side="bottom", anchor='e')
+        rep_txt_file.insert(INSERT, "Notes:    ")
+
+        rep_date_label = Label(rep_analyze_window, text=date.today().strftime("%B %d, %Y"),
+                               width=20, height=3, fg='black')
+        rep_date_label.config(font=("Courier", 16))
+        rep_date_label.place(x=1600, y=500)
 
         rep_analyze_window.mainloop()
 
     btn_rep_analyze = Button(revenues_expsenses_program_window, text="Analyze File", command=analyze_revenue_expenses_program,
-                             width=20, height=3, fg='green')
+                             width=20, height=3, fg='#023859')
     btn_rep_analyze.place(x=700, y=550)
 
     revenues_expsenses_program_window.mainloop()
@@ -1226,29 +1340,31 @@ def create_Revenue_Expenses_Program_frame():
 
 # Creates Button on main window for 'Statement oof Revenue and Expenses by Program' Option
 btn_Revenue_Expenses_Program = Button(main_window, text="Statement of Revenue and Expenses by Program",
-                                      command=create_Revenue_Expenses_Program_frame, width=50, height=3, fg='green')
+                                      command=create_Revenue_Expenses_Program_frame, width=50, height=3, fg='#023859')
 btn_Revenue_Expenses_Program.place(x=50, y=700)
-
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Main Window @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # Exit button to close program
 btn_exit = Button(main_window, text="Exit",
-                  command=lambda: [os._exit(0)], width=50, height=3, fg='green')
-btn_exit.place(x=1200, y=900)
+                  command=lambda: [os._exit(0)], width=50, height=3, fg='#023859')
+btn_exit.place(x=50, y=800)
+
+# loads image
+load = Image.open(
+    "Pueblo-Coop-Center-History.gif")
+render = ImageTk.PhotoImage((load))
+photo = Label(main_window, image=render)
+photo.place(x=1050, y=300)
 
 # loads Pueblo Cooperative Main Info
 main_label = Label(
     main_window, text="Pueblo Cooperative Care \n Financial Dashboard")
 main_label.config(font=("Courier", 36))
-main_label.place(x=1000, y=100)
-
-main_logo = Label(main_window, text="$")
-main_logo.config(font=("Courier", 206))
-main_logo.place(x=1300, y=300)
+main_label.place(x=950, y=100)
 
 main_text = Label(
     main_window, text="Pueblo IT Solutions \n CSU-Pueblo \n ©2022")
 main_text.config(font=("Courier", 16))
-main_text.place(x=1400, y=750, anchor="center")
+main_text.place(x=1400, y=900, anchor="center")
 
 main_window.mainloop()
